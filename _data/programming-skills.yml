@@ -1,0 +1,52 @@
+- name: Python
+  percentage: 95
+  color: danger
+
+- name: C/C++
+  percentage: 95
+  color: info
+
+- name: JavaScript
+  percentage: 80
+  color: secondary
+
+- name: SQL/NoSQL
+  percentage: 90
+  color: info
+
+- name: Java
+  percentage: 88
+  color: success
+
+- name: Node.js
+  percentage: 79
+  color: dark 
+
+- name: AngularJS
+  percentage: 70
+  color: warning
+
+- name: ReactJS
+  percentage: 75
+  color: info
+
+- name: R/RStudio
+  percentage: 73
+  color: secondary
+
+- name: Swift
+  percentage: 70
+  color: danger
+
+- name: PHP
+  percentage: 73
+  color: dark
+
+- name: MARIE/MIPS
+  percentage: 68
+  color: warning
+
+- name: Bash Scripting
+  percentage: 80
+  color: success
+  # secondary / success / danger / warning / info / light / dark 

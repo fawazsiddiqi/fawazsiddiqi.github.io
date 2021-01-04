@@ -1,0 +1,51 @@
+- name: Red Hat OpenShift
+  percentage: 95
+  color: danger
+
+- name: Kubernetes
+  percentage: 95
+  color: info
+
+- name: Data Visualization
+  percentage: 95
+  color: warning
+
+- name: Data Analysis
+  percentage: 90
+  color: dark
+
+- name: Machine Learning
+  percentage: 95
+  color: info
+
+- name: Data Engineering
+  percentage: 90
+  color: danger
+
+- name: DevOps
+  percentage: 85
+  color: secondary
+
+- name: Server Deployment
+  percentage: 90
+  color: info
+
+- name: Cryptography
+  percentage: 78
+  color: success
+
+- name: Penetration Testing
+  percentage: 75
+  color: warning
+
+- name: Ethical Hacking
+  percentage: 74
+  color: dark
+
+- name: Network Security
+  percentage: 80
+  color: info
+
+- name: Arduino Programming
+  percentage: 71
+  color: danger

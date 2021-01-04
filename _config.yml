@@ -1,0 +1,73 @@
+### Site Settings ###
+title               : Fawaz Siddiqi
+description         : >-
+                      "I code for a living and primarily 
+                      deal with Data/AI, Microservcies & Blockchain"
+baseurl             : ""                     # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
+repository          : fawazsiddiqi/fawazsiddiqi.github.io     # Change to <your-username>/<your-username>.github.io (or remove it if you don't need remote projects)
+remote_theme        : fawazsiddiqi/PortFaz
+
+
+### Plugins ###
+#plugins:
+#  - jemoji
+
+
+### Navbar Settings ###
+nav_exclude:                                            # The following paths are excluded from navbar
+  - pages/tags.html
+  - pages/404.html
+  - pages/index.md
+  - documentation/partials/**                           # For Documentation Only
+
+
+### Author Info ###
+author:
+  name              : Fawaz Siddiqi
+  image             : https://github.com/fawazsiddiqi/fawazsiddiqi.github.io/blob/master/assets/images/profile.jpg?raw=true
+ # behance           : your_username
+# dribbble          : your_username
+  #email             : username@domain.com
+  #facebook          : your_username
+  github            : fawazsiddiqi
+# gitlab            : your_username
+# instagram         : your_username
+  linkedin          : fawazsiddiqi
+  medium            : fawazsiddiqi
+# soundcloud        : your_username
+# spotify           : your_username
+# stackoverflow     : your_user_id
+# tumblr            : your_username.tumblr.com
+# twitch            : your_username
+  twitter           : fawaz_siddiqi
+# vimeo             : your_username
+# youtube           : your_channel_name
+  dev.to            : fawazsiddiqi
+
+
+### Posts ###
+
+
+
+### Collections ###
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name
+
+
+### Defaults for collections ###
+defaults:
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "page"
+
+
+### Exclude from processing ###
+exclude:
+  - README.md
+  - CONTRIBUTING.md
+  - LICENSE
+  - "*.log"

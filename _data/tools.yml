@@ -1,0 +1,15 @@
+# - name: Jupyter Notebooks
+#   percentage: 95
+#   color: info
+
+# - name: Xamarin
+#   percentage: 95
+#   color: info
+
+# - name: Keras/TensorFlow
+#   percentage: 90
+#   color: success
+
+# - name: Hyperledger Fabric
+#   percentage: 95
+#   color: info
