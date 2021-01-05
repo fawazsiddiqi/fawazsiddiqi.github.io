@@ -2,7 +2,7 @@
 title               : Fawaz Siddiqi
 description         : >-
                       "I code for a living and primarily 
-                      deal with Data/AI, Microservcies & Blockchain"
+                      deal with Data/AI, Microservices & Blockchain"
 baseurl             : ""                     # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
 repository          : fawazsiddiqi/fawazsiddiqi.github.io     # Change to <your-username>/<your-username>.github.io (or remove it if you don't need remote projects)
 remote_theme        : fawazsiddiqi/PortFaz
