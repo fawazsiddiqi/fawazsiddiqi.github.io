@@ -29,6 +29,10 @@
 - name: Server Deployment
   percentage: 90
   color: info
+  
+- name: Serverless Development
+  percentage: 92
+  color: danger
 
 - name: Cryptography
   percentage: 78
