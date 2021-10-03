@@ -28,4 +28,4 @@ IBM Data Science Professional Certificate
 {% endcapture %}
 {% include elements/list.html %}
 
-More certifications and Badges can be viewed at my <a href="https://www.credly.com/users/m-fawaz-siddiqi" target="_blank">Credly</a>
+More certifications and Badges can be viewed at my <a href="https://www.credly.com/users/m-fawaz-siddiqi" target="_blank">Credly</a> 
