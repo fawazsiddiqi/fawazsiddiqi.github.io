@@ -40,7 +40,7 @@
 
 - name: PHP
   percentage: 73
-  color: dark
+  color: secondary
 
 - name: MARIE/MIPS
   percentage: 68
