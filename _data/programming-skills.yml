@@ -20,7 +20,7 @@
 
 - name: Node.js
   percentage: 79
-  color: dark 
+  color: danger
 
 - name: AngularJS
   percentage: 70
