@@ -12,7 +12,7 @@
 
 - name: Data Analysis
   percentage: 90
-  color: dark
+  color: info
 
 - name: Machine Learning
   percentage: 95
