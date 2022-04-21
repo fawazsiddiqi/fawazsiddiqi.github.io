@@ -44,7 +44,7 @@
 
 - name: Ethical Hacking
   percentage: 74
-  color: dark
+  color: danger
 
 - name: Network Security
   percentage: 80
