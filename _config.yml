@@ -1,8 +1,7 @@
 ### Site Settings ###
 title               : Fawaz Siddiqi
 description         : >-
-                      "I live in a binary universe and primarily 
-                      deal with Data/AI, Microservices & Blockchain"
+                      "I live in a binary universe, with coffee and code"
 baseurl             : ""                     # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
 repository          : fawazsiddiqi/fawazsiddiqi.github.io     # Change to <your-username>/<your-username>.github.io (or remove it if you don't need remote projects)
 remote_theme        : fawazsiddiqi/PortFaz
