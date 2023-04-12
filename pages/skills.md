@@ -14,17 +14,16 @@ weight: 2
 <h2 class="mb-3">Certifications</h2>
 
 {% capture list_items %}
+IBM Certified Professional Architect - Cloud v5
+IBM Cloud Satellite v1 Specialty
+IBM Certified Professional Sales Engineer - Cloud v1
+IBM Technology Excellence
+IBM Data Science Professional Certificate
 IBM Cloud Pak for Data
-IBM Cloud Pak for Applications
-Watson Studio
-Watson Assistant
-Watson Discovery
-Watson Knowledge Catalog
+IBM Cloud Pak for Integration
 Blockchain Consulting
 IBM Solutions for Red Hat OpenShift and IBM Cloud Paks
-Introduction to Containers Kubernetes & Redhat OpenShift
 Red Hat OpenShift Administration I
-IBM Data Science Professional Certificate
 {% endcapture %}
 {% include elements/list.html %}
 
