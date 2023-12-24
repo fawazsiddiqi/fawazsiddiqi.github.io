@@ -14,14 +14,15 @@ weight: 2
 <h2 class="mb-3">Certifications</h2>
 
 {% capture list_items %}
-IBM Certified Professional Architect - Cloud v5
+IBM Technical Specialist Profession Certification - Experienced
+The Open Group Certified Technical Specialist, Package Application Implementation
+IBM Certified Professional Architect - Cloud v6
+IBM Certified Advanced Architect - Cloud v6
+IBM Certified Professional SRE - Cloud v2
 IBM Cloud Satellite v1 Specialty
 IBM Certified Professional Sales Engineer - Cloud v1
 IBM Technology Excellence
-IBM Data Science Professional Certificate
-IBM Cloud Pak for Data
-IBM Cloud Pak for Integration
-Blockchain Consulting
+IBM Cloud for Financial Services v1 Specialty
 IBM Solutions for Red Hat OpenShift and IBM Cloud Paks
 Red Hat OpenShift Administration I
 {% endcapture %}
