@@ -8,7 +8,8 @@ remote_theme        : fawazsiddiqi/PortFaz
 
 
 ### Plugins ###
-#plugins:
+plugins:
+  - jekyll-redirect-from
 #  - jemoji
 
 
