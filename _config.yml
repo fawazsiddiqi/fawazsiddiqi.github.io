@@ -5,11 +5,12 @@ description         : >-
 baseurl             : ""                     # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
 repository          : fawazsiddiqi/fawazsiddiqi.github.io     # Change to <your-username>/<your-username>.github.io (or remove it if you don't need remote projects)
 remote_theme        : fawazsiddiqi/PortFaz
+open_new_tab        : true                    # Opens external URLs in new tab (works for posts, projects and navbar only)
 
 
 ### Plugins ###
-#plugins:
-#  - jemoji
+plugins:
+  - jemoji
 
 
 ### Navbar Settings ###
@@ -18,7 +19,6 @@ nav_exclude:                                            # The following paths ar
   - pages/404.html
   - pages/index.md
   - documentation/partials/**                           # For Documentation Only
-
 
 ### Author Info ###
 author:
@@ -45,7 +45,7 @@ author:
 
 
 ### Posts ###
-
+permalink: /blog/:title
 
 
 ### Collections ###
@@ -53,6 +53,30 @@ collections:
   projects:
     output: true
     permalink: /projects/:name
+  elements:                                             # For Documentation Only
+    output: true                                        # For Documentation Only
+
+
+### Disqus ###
+# disqus:
+#   shortname: your-short-name-disqus                     # Your website Shortname on disqus
+
+
+### Analytics ###
+# analytics:
+#   enabled: false                                        # Set true to enable analytics
+#   google:
+#     tracking_id: your-google-tracking-id
+
+
+### Buy me a coffee ###
+# See https://www.buymeacoffee.com/
+# buymeacoffee:
+#   enabled: false
+#   username: your_username
+#   color: "#007bff"
+#   message: "Thank you for visiting."                    # Message to be displayed aside from the button for a few seconds.
+#   description: "Support me on Buy me a coffee!"
 
 
 ### Defaults for collections ###
@@ -62,6 +86,16 @@ defaults:
       type: "projects"
     values:
       layout: "page"
+  - scope:                                              # For Documentation Only
+      path: ""                                          # For Documentation Only
+      type: "elements"                                  # For Documentation Only
+    values:                                             # For Documentation Only
+      layout: "element"                                 # For Documentation Only
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      comments: false                                   # Set to true to enable disqus comments
 
 
 ### Exclude from processing ###
