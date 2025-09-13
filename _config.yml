@@ -12,7 +12,6 @@ open_new_tab        : true                    # Opens external URLs in new tab (
 plugins:
   - jemoji
 
-
 ### Navbar Settings ###
 nav_exclude:                                            # The following paths are excluded from navbar
   - pages/tags.html
