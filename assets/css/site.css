@@ -237,7 +237,7 @@ body.is-scrolled .scroll-edge { opacity: 1; }
 @supports (-webkit-touch-callout: none) {
   :root { --bar: color-mix(in oklab, var(--bg) 82%, color-mix(in oklab, var(--pool-1), var(--pool-3))); }
   body { background-color: var(--bar); }
-  body::before { inset: 0; }
+  body::before { inset: 0; clip-path: inset(0); }   /* its blur would glow past the edges */
   .scroll-edge { --edge: var(--bar); }
   body::after {
     --fade: var(--bar), color-mix(in oklab, var(--bar) 84%, transparent) 25%,
@@ -249,9 +249,8 @@ body.is-scrolled .scroll-edge { opacity: 1; }
     background:
       linear-gradient(var(--fade)) top / 100% 5.5rem no-repeat,
       linear-gradient(to top, var(--fade)) bottom / 100% 7rem no-repeat;
-    /* Bar colour just past both edges, over the blurred background's halo: Safari draws
-       what's there behind the status bar while its toolbar animates, and behind the
-       toolbar once it collapses. Content still scrolls under the toolbar, like any page. */
+    /* Bar colour just past both edges, in case Safari draws what's there behind its bars
+       (it does while the toolbar animates). Content still scrolls under the toolbar. */
     box-shadow: 0 -4rem var(--bar), 0 4rem var(--bar);
   }
 }
