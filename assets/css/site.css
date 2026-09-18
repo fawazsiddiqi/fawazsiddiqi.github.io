@@ -212,6 +212,23 @@ body::before {
 }
 body.is-scrolled .scroll-edge { opacity: 1; }
 
+/* iOS Safari keeps fixed layers between its bars and fills the bars with the page
+   colour (--bg), which boxes the background in. Fade the edges into that colour so the
+   bars read as part of the page. (-webkit-touch-callout is only supported on iOS.) */
+@supports (-webkit-touch-callout: none) {
+  body::after {
+    --fade: var(--bg), color-mix(in oklab, var(--bg) 84%, transparent) 25%,
+      color-mix(in oklab, var(--bg) 50%, transparent) 50%,
+      color-mix(in oklab, var(--bg) 16%, transparent) 75%, transparent;
+    content: "";
+    position: fixed; inset: 0; z-index: -1;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--fade)) top / 100% 5.5rem no-repeat,
+      linear-gradient(to top, var(--fade)) bottom / 100% 7rem no-repeat;
+  }
+}
+
 /* 4. glass ----------------------------------------------------------------- */
 
 /* frosted content panel */
