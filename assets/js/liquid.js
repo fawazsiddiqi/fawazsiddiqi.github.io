@@ -136,17 +136,23 @@ const startLightField = () => {
   /* ---------- size, pointer, scroll ---------------------------------- */
 
   let w = 0, h = 0;
+  // Sized from the canvas's CSS box, the large viewport (site.css), so a phone toolbar
+  // collapsing or expanding changes nothing here. Returns whether the size changed.
   function resize() {
     // soft gradients: half res is plenty, and less again on phones
     const scale = Math.min(devicePixelRatio || 1, 2) * (innerWidth < 700 ? 0.4 : 0.5);
-    w = Math.max(1, Math.round(innerWidth * scale));
-    h = Math.max(1, Math.round(innerHeight * scale));
+    const nw = Math.max(1, Math.round(canvas.clientWidth * scale));
+    const nh = Math.max(1, Math.round(canvas.clientHeight * scale));
+    if (nw === w && nh === h) return false;
+    w = nw; h = nh;
     canvas.width = w;
     canvas.height = h;
     gl.viewport(0, 0, w, h);
+    return true;
   }
   resize();
-  addEventListener("resize", () => { resize(); if (reduceMotion.matches) render(performance.now()); }, { passive: true });
+  // a resize leaves the canvas blank: redraw now rather than on the next throttled frame
+  addEventListener("resize", () => { if (resize()) render(performance.now()); }, { passive: true });
 
   let ptr = [0.5, 0.5];
   let ptrTarget = [0.5, 0.5];

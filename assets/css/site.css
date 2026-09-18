@@ -193,8 +193,10 @@ body::before {
 }
 
 #bg {
-  position: fixed; inset: 0; z-index: -1;
-  width: 100%; height: 100%;
+  /* The large viewport, so a phone toolbar collapsing or expanding never resizes it:
+     resizing clears a WebGL canvas and moves the pools, which flickers behind the nav. */
+  position: fixed; top: 0; left: 0; z-index: -1;
+  width: 100%; height: 100lvh;
   opacity: 0;
   transition: opacity 1s var(--ease);
 }
@@ -204,22 +206,42 @@ body::before {
 .scroll-edge {
   position: fixed; inset: 0 0 auto 0; height: calc(var(--nav-h) + 3rem); z-index: 40;
   pointer-events: none;
-  background: linear-gradient(to bottom, color-mix(in oklab, var(--bg) 62%, transparent), transparent);
+  --edge: var(--bg);
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--edge) 62%, transparent), transparent);
   -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent);
   mask-image: linear-gradient(to bottom, #000 35%, transparent);
   opacity: 0;
   transition: opacity 0.4s var(--ease);
 }
 body.is-scrolled .scroll-edge { opacity: 1; }
+/* Where supported, the fade follows the finger instead of switching on at 24px. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .scroll-edge {
+      transition: none;
+      animation: scroll-edge-in linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 5rem;
+    }
+    @keyframes scroll-edge-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  }
+}
 
-/* iOS Safari keeps fixed layers between its bars and fills the bars with the page
-   colour (--bg), which boxes the background in. Fade the edges into that colour so the
-   bars read as part of the page. (-webkit-touch-callout is only supported on iOS.) */
+/* iOS Safari (26+) never draws fixed content behind its status bar or toolbar; it
+   fills them with the body's background colour. So on iOS that colour comes from the
+   gradient, and the gradient's edges blend into it: the bars read as part of the page.
+   (-webkit-touch-callout is only supported on iOS.) */
 @supports (-webkit-touch-callout: none) {
+  :root { --bar: color-mix(in oklab, var(--bg) 82%, color-mix(in oklab, var(--pool-1), var(--pool-3))); }
+  body { background-color: var(--bar); }
+  .scroll-edge { --edge: var(--bar); }
   body::after {
-    --fade: var(--bg), color-mix(in oklab, var(--bg) 84%, transparent) 25%,
-      color-mix(in oklab, var(--bg) 50%, transparent) 50%,
-      color-mix(in oklab, var(--bg) 16%, transparent) 75%, transparent;
+    --fade: var(--bar), color-mix(in oklab, var(--bar) 84%, transparent) 25%,
+      color-mix(in oklab, var(--bar) 50%, transparent) 50%,
+      color-mix(in oklab, var(--bar) 16%, transparent) 75%, transparent;
     content: "";
     position: fixed; inset: 0; z-index: -1;
     pointer-events: none;
