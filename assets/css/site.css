@@ -363,7 +363,8 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   .nav {
     flex-wrap: wrap;
     width: min(100%, 420px);
-    padding: 0.4rem 0.5rem;
+    padding: 0.4rem;   /* equal on all sides so the FS badge and theme button sit centred in the rounded ends */
+    row-gap: 0;        /* the closed menu is an empty second row; a row gap would pad the bottom */
     border-radius: 26px;
   }
   .nav-brand { margin-right: 0.2rem; }
@@ -381,7 +382,7 @@ body.is-scrolled .scroll-edge { opacity: 1; }
     display: block; overflow: hidden; max-height: 0;
     transition: max-height 0.45s var(--ease);
   }
-  .nav-menu > .nav-menu-inner { display: flex; flex-direction: column; padding-top: 0.25rem; }
+  .nav-menu > .nav-menu-inner { display: flex; flex-direction: column; padding-top: 0.6rem; }
   .nav[data-open] .nav-menu { max-height: 70vh; }
   .nav[data-open] { border-radius: var(--r-xl); }
   .nav-link { padding: 0.7rem 0.9rem; font-size: var(--step-0); }
