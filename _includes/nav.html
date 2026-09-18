@@ -1,0 +1,39 @@
+{%- assign nav_ids = "about,career,skills,work,writing" | split: "," -%}
+{%- assign nav_labels = "About,Career,Skills,Work,Writing" | split: "," -%}
+{%- assign name_parts = site.title | split: " " -%}
+{%- assign current = page.nav -%}
+{%- if page.collection == "posts" -%}{%- assign current = "writing" -%}{%- endif -%}
+{%- if page.collection == "projects" -%}{%- assign current = "work" -%}{%- endif -%}
+{%- assign current_label = "Menu" -%}
+{%- for id in nav_ids -%}{%- if id == current -%}{%- assign current_label = nav_labels[forloop.index0] -%}{%- endif -%}{%- endfor -%}
+
+<header class="nav-wrap">
+  <nav class="nav lg" aria-label="Primary">
+    <a class="nav-brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title }}, home">
+      {%- for part in name_parts -%}{{ part | slice: 0 }}{%- endfor -%}
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+      <span class="nav-current">{{ current_label }}</span>
+      <svg class="i" aria-hidden="true"><use href="#i-menu"></use></svg>
+      <span class="sr-only">Open menu</span>
+    </button>
+
+    <div class="nav-menu" id="nav-menu">
+      <div class="nav-menu-inner">
+        {%- for id in nav_ids %}
+        {%- capture href %}/{{ id }}/{% endcapture %}
+        <a class="nav-link" href="{{ href | relative_url }}"{% if id == current %} aria-current="page"{% endif %}>
+          <span class="nav-pill" aria-hidden="true"></span>
+          <span class="nav-label">{{ nav_labels[forloop.index0] }}</span>
+        </a>
+        {%- endfor %}
+      </div>
+    </div>
+
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch theme">
+      <svg class="i i-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+      <svg class="i i-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+    </button>
+  </nav>
+</header>

@@ -1,0 +1,13 @@
+# Work page -> "From my GitHub"      Add to: _data/github-projects.yml
+#
+# Easiest: add just the repo name, then run  python3 tools/refresh-repos.py
+# and it fills in (and later refreshes) the rest from GitHub.
+# By hand, the full entry looks like this. Cards appear in the order of the file.
+
+- name: "your-repo-name"
+  url: "https://github.com/fawazsiddiqi/your-repo-name"
+  description: "What the repo is."
+  language: "Python"            # leave "" for none
+  stars: 0                      # the star count only shows when above 0
+  year: "2027"                  # year of the last push
+  fork: false                   # true adds a small "fork" tag

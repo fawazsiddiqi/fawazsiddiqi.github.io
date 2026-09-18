@@ -1,0 +1,30 @@
+{%- assign linkedin = site.data.social | where: "name", "LinkedIn" | first -%}
+
+<section class="section" id="contact">
+  <div class="container">
+    <article class="panel contact reveal">
+      <p class="eyebrow">Contact</p>
+      <h2>Let's <em>talk</em></h2>
+      <p class="lead" style="max-width:46ch">{{ site.description }}</p>
+
+      <div class="cta-row">
+        <a class="btn lg btn-primary" href="{{ linkedin.url }}" target="_blank" rel="noopener">
+          <svg class="i" aria-hidden="true"><use href="#i-linkedin"></use></svg>
+          Message me on LinkedIn
+        </a>
+      </div>
+
+      <ul class="socials">
+        {%- for s in site.data.social %}
+        {%- unless s.name == "LinkedIn" %}
+        <li>
+          <a class="icon-btn" href="{{ s.url }}" target="_blank" rel="noopener" aria-label="{{ s.name }}" title="{{ s.name }}">
+            <svg class="i" aria-hidden="true"><use href="#i-{{ s.icon }}"></use></svg>
+          </a>
+        </li>
+        {%- endunless %}
+        {%- endfor %}
+      </ul>
+    </article>
+  </div>
+</section>

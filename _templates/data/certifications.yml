@@ -1,0 +1,6 @@
+# Skills page -> "What I'm certified in"      Add to: _data/certifications.yml
+# Cards appear in the order of the file. Use the certificate's exact name (Credly has it).
+
+- name: Certification name
+  issuer: IBM                   # shown in small caps above the name
+  year: 2027                    # optional: leave the line out if unknown

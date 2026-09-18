@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<div class="page-wrap">
+  <div class="container" style="max-width:820px">
+    <article class="panel prose reveal">
+      <h1>{{ page.name | default: page.title }}</h1>
+      {%- if page.tools %}
+      <p class="tools" style="margin:1rem 0 1.5rem">
+        {%- for tool in page.tools %}<span class="tool">{{ tool }}</span>{% endfor %}
+      </p>
+      {%- endif %}
+      {{ content }}
+    </article>
+    <p style="margin-top:1.5rem"><a class="btn lg" href="{{ '/work/' | relative_url }}">← Back to work</a></p>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+{%- assign projects = site.projects | sort: "order" -%}
+{%- assign github = site.data.social | where: "name", "GitHub" | first -%}
+{%- assign covers = "1,3|2,1|3,4|4,2|1,2|2,3" | split: "|" -%}
+
+<h1 class="sr-only">Work</h1>
+
+<section class="section" id="projects">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow">01 / Projects</p>
+      <h2 class="section-title">Selected <em>work</em></h2>
+    </header>
+
+    <div class="grid cards">
+      {%- for project in projects %}
+      {%- assign pair = covers[forloop.index0] | split: "," -%}
+      {%- assign href = project.redirect_to -%}
+      <{% if href %}a href="{{ href }}"{% if site.open_new_tab %} target="_blank" rel="noopener"{% endif %}{% else %}article{% endif %} class="panel card reveal">
+        <span class="card-cover" aria-hidden="true" style="--c1:var(--pool-{{ pair[0] }});--c2:var(--pool-{{ pair[1] }})"></span>
+        <h3 class="card-title">
+          {{ project.name }}
+          {%- if href %}<svg class="i" aria-hidden="true"><use href="#i-external"></use></svg>{% endif %}
+        </h3>
+        <p class="card-desc">{{ project.description }}</p>
+        <p class="tools">
+          {%- for tool in project.tools %}<span class="tool">{{ tool }}</span>{% endfor %}
+        </p>
+      </{% if href %}a{% else %}article{% endif %}>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="open-source">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow">02 / Open source</p>
+      <h2 class="section-title">From my <em>GitHub</em></h2>
+    </header>
+
+    <div class="grid cards">
+      {%- for repo in site.data.github-projects %}
+      <a class="panel card reveal" href="{{ repo.url }}" target="_blank" rel="noopener">
+        <h3 class="card-title repo-name">
+          <svg class="i" aria-hidden="true"><use href="#i-github"></use></svg>
+          {{ repo.name }}
+        </h3>
+        <p class="card-desc clamp-3">{{ repo.description }}</p>
+        <p class="card-meta">
+          {%- if repo.language != "" %}<span class="lang" style="--lang-color:{% case repo.language %}{% when 'Python' %}#3572a5{% when 'Jupyter Notebook' %}#da5b0b{% when 'C#' %}#178600{% else %}var(--ink-3){% endcase %}">{{ repo.language }}</span>{% endif %}
+          {%- if repo.stars > 0 %}<span><svg class="i" style="width:13px;height:13px" aria-hidden="true"><use href="#i-star"></use></svg>{{ repo.stars }}</span>{% endif %}
+          <span class="mono">{{ repo.year }}</span>
+          {%- if repo.fork %}<span class="tool">fork</span>{% endif %}
+        </p>
+      </a>
+      {%- endfor %}
+    </div>
+
+    <p style="margin-top:1.5rem">
+      <a class="btn lg" href="{{ github.url }}?tab=repositories" target="_blank" rel="noopener">
+        More on GitHub
+        <svg class="i" aria-hidden="true"><use href="#i-external"></use></svg>
+      </a>
+    </p>
+  </div>
+</section>

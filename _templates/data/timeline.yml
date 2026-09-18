@@ -1,0 +1,14 @@
+# Career page -> "Where I've worked"      Add to: _data/timeline.yml
+#
+# Paste new jobs at the TOP of the file (the list is newest first).
+# - A new company becomes a new panel above the existing ones.
+# - Another role at the same company joins that company's panel.
+# - The first entry is also the role shown in the chip on the home page.
+# Dates are shown exactly as written. End them with the year ("March 2027" or "2027"):
+# the company's span ("2020 — Present") is built from those years.
+
+- title: Job title
+  position: Company name        # same name as an existing company = same panel
+  from: January 2027
+  to: Present                   # or when it ended, e.g. December 2028
+  description:                  # optional: one line under the role

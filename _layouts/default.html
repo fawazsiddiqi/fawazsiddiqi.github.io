@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en' }}" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#eef1f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#06070d" media="(prefers-color-scheme: dark)">
+
+  <script>
+    // Theme before first paint: saved choice wins, otherwise follow the system.
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      } catch (e) {}
+      // A page-to-page transition can be cancelled midway (a second click, a reload,
+      // the tab hidden). The browser then rejects its promise; handle it so that is
+      // not reported as an error. Registered here so it exists before the first paint.
+      ["pageswap", "pagereveal"].forEach(function (type) {
+        addEventListener(type, function (e) {
+          if (e.viewTransition) e.viewTransition.ready.catch(function () {});
+        });
+      });
+    })();
+  </script>
+
+  {% seo %}
+  {%- if page.url == "/" %}
+  {%- comment %} Tells search engines who the site belongs to. Built from _data, so it follows the current job and social links. {% endcomment %}
+  {%- assign role = site.data.timeline | first %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": {{ site.author.name | jsonify }},
+      "url": {{ "/" | absolute_url | jsonify }},
+      "image": {{ "/assets/img/portrait.webp" | absolute_url | jsonify }},
+      "jobTitle": {{ role.title | jsonify }},
+      "worksFor": { "@type": "Organization", "name": {{ role.position | jsonify }} },
+      "sameAs": {{ site.data.social | map: "url" | jsonify }}
+    }
+  </script>
+  {%- endif %}
+
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/geist-normal-300-700.woff2' | relative_url }}">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/instrument-serif-italic-400.woff2' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
+
+  <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
+  <script src="{{ '/assets/js/liquid.js' | relative_url }}" defer></script>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="scroll-edge" aria-hidden="true"></div>
+
+  {% include nav.html %}
+
+  <main id="main">
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+
+  <svg id="glass-filters" width="0" height="0" aria-hidden="true" style="position:absolute"></svg>
+  {% include icons.html %}
+</body>
+</html>

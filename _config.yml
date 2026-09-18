@@ -1,0 +1,49 @@
+### Site ###
+title               : Fawaz Siddiqi
+description         : >-
+                      Platform Architect at IBM. I turn business problems into systems
+                      somebody can actually build, staff, and pay for.
+tagline             : Platform Architect at IBM   # appended to the title tag
+url                 : https://fawazsiddiqi.dev   # no trailing slash
+baseurl             : ""                         # "" for a custom domain or <user>.github.io
+lang                : en
+repository          : fawazsiddiqi/fawazsiddiqi.github.io   # owner/repo — change to the new repo
+
+author:
+  name              : Fawaz Siddiqi
+
+open_new_tab        : true    # external links open in a new tab
+
+
+### Plugins (all supported by GitHub Pages) ###
+plugins:
+  - jemoji
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-redirect-from
+
+
+### Content ###
+permalink: /blog/:title
+
+collections:
+  projects:
+    output: false            # true + `layout: page` gives each project its own page
+    permalink: /projects/:name
+
+defaults:
+  - scope: { path: "" }
+    values:
+      image: /assets/img/og.jpg
+  - scope: { path: "", type: "posts" }
+    values:
+      layout: post
+
+
+exclude:
+  - tools
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - "*.log"

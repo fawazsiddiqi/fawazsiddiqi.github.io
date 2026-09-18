@@ -1,0 +1,20 @@
+---
+layout: default
+---
+<div class="page-wrap">
+  <div class="container" style="max-width:760px">
+    <article class="panel prose reveal">
+      <h1>{{ page.title }}</h1>
+      <p class="post-meta" style="margin:0.9rem 0 2rem">
+        <span class="mono">{{ page.date | date: "%B %-d, %Y" }}</span>
+        <span class="mono">
+          {%- assign words = content | number_of_words -%}
+          {%- if words < 360 %}1 min read{% else %}{{ words | divided_by: 180 }} min read{% endif -%}
+        </span>
+        {%- for tag in page.tags %}<span class="tool">{{ tag }}</span>{% endfor %}
+      </p>
+      {{ content }}
+    </article>
+    <p style="margin-top:1.5rem"><a class="btn lg" href="{{ '/writing/' | relative_url }}">← Back to writing</a></p>
+  </div>
+</div>

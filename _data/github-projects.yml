@@ -1,0 +1,74 @@
+# Repos shown in the Work section, in the order listed here.
+# Refresh stars / descriptions / years:  python3 tools/refresh-repos.py  (see README)
+
+- name: "recommendation-system-with-a-Restricted-Boltzmann-Machine-using-tensorflow"
+  url: "https://github.com/fawazsiddiqi/recommendation-system-with-a-Restricted-Boltzmann-Machine-using-tensorflow"
+  description: "Code-pattern to walk through RBM based recommender system using TF"
+  language: "Jupyter Notebook"
+  stars: 6
+  year: "2020"
+  fork: false
+
+- name: "CP4D-Banking-Cross-Sell"
+  url: "https://github.com/fawazsiddiqi/CP4D-Banking-Cross-Sell"
+  description: "This is a CP4D demo asset that focuses on Up/Cross sells in the Banking industry focusing on targeting customer for the right products. In other words it predicts which customers are more likely to buy a specific product. This allows banking sector employees to determine what services their customers would be interested in."
+  language: "Python"
+  stars: 2
+  year: "2021"
+  fork: false
+
+- name: "HeartAttackPrediction"
+  url: "https://github.com/fawazsiddiqi/HeartAttackPrediction"
+  description: "A notebook to make predictions for heart attacks in patients, focused on data transformation and a Random Forest Regressor"
+  language: "Jupyter Notebook"
+  stars: 1
+  year: "2020"
+  fork: false
+
+- name: "CFC-Water-Ridgewood"
+  url: "https://github.com/fawazsiddiqi/CFC-Water-Ridgewood"
+  description: "The example Node-RED flows and dashboards can help you build a water quality dashboard using GeoJSON. After completing this tutorial, you will be ready to modify these example flows and dashboards to create your own map and data visualization solution."
+  language: ""
+  stars: 0
+  year: "2021"
+  fork: false
+
+- name: "DataScienceMethodology"
+  url: "https://github.com/fawazsiddiqi/DataScienceMethodology"
+  description: "Explore the different tasks of a data scientist, and learn how the tasks can help other roles within the data science methodology."
+  language: ""
+  stars: 0
+  year: "2021"
+  fork: false
+
+- name: "CancerDetectionAccuracy"
+  url: "https://github.com/fawazsiddiqi/CancerDetectionAccuracy"
+  description: "Making training a machine learning model using SVM and outputting its accuracy. Made using sklearn datasets, and it is used to detect the type of cancer and its state"
+  language: "Jupyter Notebook"
+  stars: 0
+  year: "2019"
+  fork: false
+
+- name: "BallBalancer"
+  url: "https://github.com/fawazsiddiqi/BallBalancer"
+  description: "Using TensorFlow and Unity ML to balance a ball in its position on a platform, while the platform is moving erratically"
+  language: "C#"
+  stars: 0
+  year: "2019"
+  fork: false
+
+- name: "carekit-hyperprotect-lab"
+  url: "https://github.com/fawazsiddiqi/carekit-hyperprotect-lab"
+  description: "CareKit is an open source framework that helps users better understand and manage their health by creating dynamic care plans, tracking symptoms, connecting to care teams, and more. CareKit itself doesn’t include a back end, so it’s up to the developers to include a back end of their choice. This typically means implementing the synchronization API for their cloud provider of choice. IBM was one of the first cloud providers to implement the synchronization API, and consumed the Hyper Protect set of offerings to provide a HIPAA-ready back end."
+  language: ""
+  stars: 0
+  year: "2021"
+  fork: true
+
+- name: "Tovit"
+  url: "https://github.com/fawazsiddiqi/Tovit"
+  description: "A COVID-19 toolkit |  a one-stop-app with all the assets you would require to stay safe from COVID-19."
+  language: ""
+  stars: 0
+  year: "2020"
+  fork: true

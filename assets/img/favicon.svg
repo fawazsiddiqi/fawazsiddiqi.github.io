@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="FS">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3d5afe"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#g)"/>
+  <text x="32" y="43" text-anchor="middle" fill="#fff"
+        font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif"
+        font-size="30" font-weight="600" letter-spacing="-1">FS</text>
+</svg>

@@ -1,0 +1,6 @@
+- { name: LinkedIn, url: "https://www.linkedin.com/in/fawazsiddiqi", icon: linkedin }
+- { name: GitHub,   url: "https://github.com/fawazsiddiqi",          icon: github }
+- { name: Medium,   url: "https://medium.com/@fawazsiddiqi",         icon: medium }
+- { name: X,        url: "https://x.com/fawaz_siddiqi",              icon: x }
+- { name: dev.to,   url: "https://dev.to/fawazsiddiqi",              icon: devto }
+- { name: Credly,   url: "https://www.credly.com/users/fawazsiddiqi", icon: credly }

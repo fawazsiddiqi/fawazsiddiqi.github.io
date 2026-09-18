@@ -1,0 +1,15 @@
+---
+layout: about
+title: About
+description: Solution architect at IBM, working on application modernization, integration and microservices, and on digital transformation with teams and startups.
+permalink: /about/
+nav: about
+---
+
+I am **{{ site.author.name }}**, a solution architect.
+
+I work on application modernization, integration, and microservices, which mostly means translating a business problem into a system somebody can actually build, staff, and pay for. The interesting constraints are rarely technical. They're the existing vendor contract, the team you have rather than the team you'd like, and the six weeks before the thing needs to be in front of a customer.
+
+I came to this through building. Web, frontend, backend, and data systems, enough of each that I'm suspicious of designs that look clean in a slide and expensive on a Tuesday at 3am. It also means when I tell a client something is feasible, I know what I'm committing their engineers to. That credibility is most of the job. The rest is asking the question nobody has asked yet, usually some version of "what happens to this data when the integration fails."
+
+I also work on digital transformation and IT strategy with teams and startups. The useful version of that isn't a roadmap deck. It's sitting with a founder who has four priorities and finding out which one is real, then designing something that gets to production without collapsing the first time it meets an actual user.

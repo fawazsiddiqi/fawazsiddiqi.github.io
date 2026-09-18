@@ -1,0 +1,11 @@
+# Skills page -> "What I work with"      Edit: _data/skills.yml
+#
+# To add a skill: put a new line under the right group's `skills:`.
+# To add a group: paste the block below at the end of the file.
+# Groups show two per row; an odd last group spans the full width.
+
+- group: Group name
+  skills:
+    - First skill
+    - Second skill
+    - Third skill

@@ -1,0 +1,7 @@
+# Career page -> "Where I've mentored" (Mentorship & Hackathons)      Add to: _data/mentor.yml
+# Newest first.
+
+- title: Programme or hackathon name
+  org: Mentor                   # your role; shown as a tag: Mentor, Participant, Judge...
+  from: 2027
+  to: 2027                      # same as from shows a single year; or "Present"

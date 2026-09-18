@@ -1,0 +1,7 @@
+# Social icons (home page, contact panel, footer)      Edit: _data/social.yml
+# The order of the file is the order on the page.
+#
+# icon must be one of: linkedin, github, medium, x, devto, credly
+# (a new icon has to be added to _includes/icons.html first).
+
+- { name: GitHub, url: "https://github.com/fawazsiddiqi", icon: github }

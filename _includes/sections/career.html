@@ -1,0 +1,99 @@
+{%- comment -%}
+  Four sub-sections, each with the same headline treatment.
+  Companies stack in _data/timeline.yml order (newest first): a new job added at the top of
+  that file becomes a new panel above the others. Roles group by `position` (the company).
+{%- endcomment -%}
+{%- assign orgs = site.data.timeline | map: "position" | uniq -%}
+
+<h1 class="sr-only">Career</h1>
+
+<section class="section" id="experience">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow">01 / Experience</p>
+      <h2 class="section-title">Where I've <em>worked</em></h2>
+    </header>
+
+    <div class="grid orgs">
+      {%- for org in orgs %}
+      {%- assign roles = site.data.timeline | where: "position", org %}
+      {%- assign span_from = roles.last.from | split: " " | last %}
+      {%- assign span_to = roles.first.to %}
+      {%- unless span_to == "Present" %}{% assign span_to = span_to | split: " " | last %}{% endunless %}
+      <article class="panel panel-pad org reveal">
+        <header class="org-head">
+          <h3 class="org-name">{{ org }}</h3>
+          <p class="org-span mono">{% if span_from == span_to %}{{ span_from }}{% else %}{{ span_from }} — {{ span_to }}{% endif %}</p>
+        </header>
+        <div class="rail">
+          {%- for role in roles %}
+          <div class="role{% if role.to == 'Present' %} is-now{% endif %}">
+            <h4 class="role-title">{{ role.title | replace: " - ", " — " }}{% if role.to == "Present" %}<span class="badge-now">Now</span>{% endif %}</h4>
+            <p class="role-dates mono">{{ role.from }} — {{ role.to }}</p>
+            {%- if role.description %}<p>{{ role.description }}</p>{% endif %}
+          </div>
+          {%- endfor %}
+        </div>
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="education">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow">02 / Education</p>
+      <h2 class="section-title">Where I <em>studied</em></h2>
+    </header>
+
+    <div class="grid tiles tiles-2">
+      {%- for item in site.data.education %}
+      <article class="panel tile reveal">
+        <p class="tile-meta mono">{{ item.from }} — {{ item.to }}</p>
+        <h3 class="tile-title">{{ item.title }}</h3>
+        <p class="tile-sub">{{ item.school }}</p>
+        {%- if item.description %}<p class="tile-sub">{{ item.description }}</p>{% endif %}
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="leadership">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow">03 / Leadership &amp; Community</p>
+      <h2 class="section-title">Where I've <em>led</em></h2>
+    </header>
+
+    <div class="grid tiles tiles-3">
+      {%- for item in site.data.highlights %}
+      <article class="panel tile reveal">
+        <p class="tile-meta mono">{% if item.from == item.to %}{{ item.from }}{% else %}{{ item.from }} — {{ item.to }}{% endif %}</p>
+        <h3 class="tile-title">{{ item.title }}</h3>
+        <p class="tile-sub">{{ item.org }}</p>
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="mentorship">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow">04 / Mentorship &amp; Hackathons</p>
+      <h2 class="section-title">Where I've <em>mentored</em></h2>
+    </header>
+
+    <div class="grid tiles tiles-4">
+      {%- for item in site.data.mentor %}
+      <article class="panel tile reveal">
+        <p class="tile-meta mono">{% if item.from == item.to %}{{ item.from }}{% else %}{{ item.from }} — {{ item.to }}{% endif %}</p>
+        <h3 class="tile-title">{{ item.title }}</h3>
+        <p><span class="tag">{{ item.org }}</span></p>
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

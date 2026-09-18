@@ -1,0 +1,5 @@
+# About page -> the highlight tiles under your bio      Edit: _data/about-highlights.yml
+# Four or five read best in one row on desktop; more wrap to a second row.
+
+- title: Short headline
+  detail: One line of context, e.g. the issuer and year

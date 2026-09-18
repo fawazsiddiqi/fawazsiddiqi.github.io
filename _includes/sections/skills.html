@@ -1,0 +1,50 @@
+{%- assign credly = site.data.social | where: "name", "Credly" | first -%}
+
+<h1 class="sr-only">Skills &amp; certifications</h1>
+
+<section class="section" id="skills">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow">01 / Skills</p>
+      <h2 class="section-title">What I <em>work with</em></h2>
+    </header>
+
+    <div class="grid skill-groups">
+      {%- for group in site.data.skills %}
+      <article class="panel panel-pad skill-group reveal">
+        <h3>{{ group.group }}</h3>
+        <ul class="skill-list">
+          {%- for skill in group.skills %}
+          <li class="skill">{{ skill }}</li>
+          {%- endfor %}
+        </ul>
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="certifications">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow">02 / Certifications</p>
+      <h2 class="section-title">What I'm <em>certified in</em></h2>
+    </header>
+
+    <div class="grid certs">
+      {%- for cert in site.data.certifications %}
+      <article class="panel cert reveal">
+        <p class="cert-issuer">{{ cert.issuer }}{% if cert.year %}<span class="cert-year">{{ cert.year }}</span>{% endif %}</p>
+        <p class="cert-name">{{ cert.name | replace: " - ", " — " }}</p>
+      </article>
+      {%- endfor %}
+    </div>
+
+    <p style="margin-top:1.5rem">
+      <a class="btn lg" href="{{ credly.url }}" target="_blank" rel="noopener">
+        All badges on Credly
+        <svg class="i" aria-hidden="true"><use href="#i-external"></use></svg>
+      </a>
+    </p>
+  </div>
+</section>

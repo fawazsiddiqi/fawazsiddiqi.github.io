@@ -1,0 +1,7 @@
+# Career page -> "Where I've led" (Leadership & Community)      Add to: _data/highlights.yml
+# Newest first.
+
+- title: Role or position
+  org: Organisation
+  from: January 2027            # a single year when from and to are the same shows once
+  to: Present

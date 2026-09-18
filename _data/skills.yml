@@ -1,0 +1,91 @@
+# Skill groups for the Skills page. No levels: add, remove or reorder freely.
+# Vendor-neutral on purpose: skills, not product names.
+# "Solutioning" and "Business/IT Alignment" come from the portfolio deck (Key Skills &
+# Areas of Expertise); the rest from the CV's Core Competencies, with overlaps merged.
+
+- group: Solutioning
+  skills:
+    - Business analysis & understanding
+    - Solution value & viability
+    - Target architecture
+    - Trade-off analysis
+    - Reference architectures
+    - Deployment architecture
+    - System integration
+    - Cloud-native architecture
+    - Microservices & API design
+    - Solution security & compliance
+
+- group: Business/IT Alignment
+  skills:
+    - Business transformation & strategy
+    - Digital transformation roadmapping
+    - Strategic IT planning
+    - Innovation strategy development
+    - Technology portfolio management
+    - Technology governance
+    - Business process reengineering
+    - Use-case identification
+    - Stakeholder communication
+    - Risk mitigation
+    - Project management
+
+- group: AI & Agentic Architecture
+  skills:
+    - Machine learning
+    - MCP server architecture
+    - A2A solutioning
+    - Multi-agent orchestration
+    - RAG architecture
+    - Models as managed APIs
+    - Model serving & inference
+    - Multi-model routing
+    - LLM observability
+    - AI gateway architecture
+    - Token rate limits & quotas
+    - Prompt & response guardrails
+
+- group: Architecture
+  skills:
+    - Solution & enterprise architecture
+    - API-led & event-driven integration
+    - Application modernization
+    - Hybrid, multi-cloud & distributed cloud
+    - Data & AI platform architecture
+    - Scalability & performance design
+    - Resilience & disaster recovery
+
+- group: Cloud & Platform
+  skills:
+    - Kubernetes
+    - Red Hat OpenShift
+    - IBM Cloud
+    - Microsoft Azure
+    - AWS
+    - Infrastructure as Code
+    - DevOps & CI/CD
+    - Serverless
+    - Observability & automation
+    - FinOps & cost optimization
+    - Network architecture
+
+- group: Customer Engagement
+  skills:
+    - Technical pre-sales & discovery
+    - PoC & MVP delivery
+    - RFP & RFI responses
+    - Executive & architecture workshops
+    - Partner & ISV enablement
+    - Account planning
+    - Migration planning
+    - Technical evangelism & public speaking
+
+- group: Languages & Data
+  skills:
+    - Python
+    - C/C++
+    - JavaScript & Node.js
+    - Java
+    - SQL & NoSQL
+    - Bash
+    - Data engineering

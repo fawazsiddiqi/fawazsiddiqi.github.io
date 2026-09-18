@@ -1,0 +1,34 @@
+# From the CV (Sep 2026) plus the IBM Architect Profession certification.
+# Years come from the CV or Credly; leave `year` out when unknown.
+- name: The Open Group Certified Master Architect
+  issuer: The Open Group
+  year: 2026
+- name: Architect Profession Certification - Level 2 Expert
+  issuer: IBM
+  year: 2026
+- name: IBM Certified Advanced Architect, Cloud
+  issuer: IBM
+  year: 2023
+- name: The Open Group Certified Technical Specialist
+  issuer: The Open Group
+  year: 2023
+- name: IBM Certified Professional Architect, Cloud
+  issuer: IBM
+  year: 2023
+- name: IBM Cloud for Financial Services Specialty
+  issuer: IBM
+  year: 2024
+- name: "Microsoft Certified: Azure Fundamentals"
+  issuer: Microsoft
+  year: 2025
+- name: IBM Certified Professional SRE, Cloud
+  issuer: IBM
+  year: 2023
+- name: IBM Cloud Satellite Specialty
+  issuer: IBM
+  year: 2022
+- name: IBM Certified Professional Sales Engineer, Cloud
+  issuer: IBM
+  year: 2022
+- name: Red Hat OpenShift Administration I
+  issuer: Red Hat

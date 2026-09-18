@@ -1,0 +1,8 @@
+# Career page -> "Where I studied"      Add to: _data/education.yml
+# Newest first.
+
+- title: Degree name
+  school: University name
+  from: 2027
+  to: 2029
+  description:                  # optional: e.g. your thesis or research title

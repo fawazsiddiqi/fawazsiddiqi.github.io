@@ -1,0 +1,28 @@
+<section class="section" id="about">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow">About</p>
+      <h1 class="section-title">The short <em>version</em></h1>
+    </header>
+
+    <div class="grid bento">
+      <article class="panel panel-pad bio reveal">
+        {{ content }}
+      </article>
+
+      <figure class="panel portrait reveal">
+        <img src="{{ '/assets/img/portrait.webp' | relative_url }}" alt="{{ site.author.name }}"
+             width="760" height="950" loading="lazy" decoding="async">
+      </figure>
+    </div>
+
+    <ul class="grid glances">
+      {%- for h in site.data.about-highlights %}
+      <li class="panel glance reveal">
+        <p class="glance-title">{{ h.title }}</p>
+        <p class="glance-detail">{{ h.detail }}</p>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
