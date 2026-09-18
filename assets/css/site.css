@@ -167,9 +167,10 @@ em, i { font-family: var(--font-serif); font-style: italic; letter-spacing: 0.01
   position: fixed; top: 0; left: 50%; translate: -50% -150%; z-index: 100;
   padding: 0.7rem 1.2rem; border-radius: 0 0 var(--r-md) var(--r-md);
   background: var(--panel-solid); color: var(--ink); text-decoration: none;
-  box-shadow: var(--shadow-sm); transition: translate 0.25s var(--ease);
+  box-shadow: var(--shadow-sm); transition: translate 0.25s var(--ease), opacity 0.25s var(--ease);
+  opacity: 0;   /* parked above the page, where iOS can show it behind the status bar */
 }
-.skip:focus-visible { translate: -50% 0; }
+.skip:focus-visible { translate: -50% 0; opacity: 1; }
 
 .mono { font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: 0.02em; }
 
@@ -193,10 +194,8 @@ body::before {
 }
 
 #bg {
-  /* The large viewport, so a phone toolbar collapsing or expanding never resizes it:
-     resizing clears a WebGL canvas and moves the pools, which flickers behind the nav. */
-  position: fixed; top: 0; left: 0; z-index: -1;
-  width: 100%; height: 100lvh;
+  position: fixed; inset: 0; z-index: -1;
+  width: 100%; height: 100%;
   opacity: 0;
   transition: opacity 1s var(--ease);
 }
@@ -230,13 +229,15 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   }
 }
 
-/* iOS Safari (26+) never draws fixed content behind its status bar or toolbar; it
-   fills them with the body's background colour. So on iOS that colour comes from the
-   gradient, and the gradient's edges blend into it: the bars read as part of the page.
+/* iOS Safari (26+) fills its status bar and toolbar with the body's background colour.
+   So on iOS that colour comes from the gradient, and the gradient's edges blend into it:
+   the bars read as part of the page. Nothing fixed may reach past the visible area,
+   because iOS shows it behind the bars once the page scrolls or the toolbar shrinks.
    (-webkit-touch-callout is only supported on iOS.) */
 @supports (-webkit-touch-callout: none) {
   :root { --bar: color-mix(in oklab, var(--bg) 82%, color-mix(in oklab, var(--pool-1), var(--pool-3))); }
   body { background-color: var(--bar); }
+  body::before { inset: 0; }
   .scroll-edge { --edge: var(--bar); }
   body::after {
     --fade: var(--bar), color-mix(in oklab, var(--bar) 84%, transparent) 25%,

@@ -136,14 +136,15 @@ const startLightField = () => {
   /* ---------- size, pointer, scroll ---------------------------------- */
 
   let w = 0, h = 0;
-  // Sized from the canvas's CSS box, the large viewport (site.css), so a phone toolbar
-  // collapsing or expanding changes nothing here. Returns whether the size changed.
+  // A phone toolbar collapsing or expanding changes the height by a few percent. Leave
+  // the buffer alone then and let CSS stretch it: reallocating clears the canvas and
+  // moves the pools, which flickers behind the nav. Returns whether it reallocated.
   function resize() {
     // soft gradients: half res is plenty, and less again on phones
     const scale = Math.min(devicePixelRatio || 1, 2) * (innerWidth < 700 ? 0.4 : 0.5);
     const nw = Math.max(1, Math.round(canvas.clientWidth * scale));
     const nh = Math.max(1, Math.round(canvas.clientHeight * scale));
-    if (nw === w && nh === h) return false;
+    if (nw === w && Math.abs(nh - h) <= h * 0.15) return false;
     w = nw; h = nh;
     canvas.width = w;
     canvas.height = h;
