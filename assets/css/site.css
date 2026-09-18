@@ -249,21 +249,10 @@ body.is-scrolled .scroll-edge { opacity: 1; }
     background:
       linear-gradient(var(--fade)) top / 100% 5.5rem no-repeat,
       linear-gradient(to top, var(--fade)) bottom / 100% 7rem no-repeat;
-    /* Bar colour just past both edges, over the blurred background's halo: while the
-       toolbar animates, Safari briefly draws what's there behind the status bar. */
+    /* Bar colour just past both edges, over the blurred background's halo: Safari draws
+       what's there behind the status bar while its toolbar animates, and behind the
+       toolbar once it collapses. Content still scrolls under the toolbar, like any page. */
     box-shadow: 0 -4rem var(--bar), 0 4rem var(--bar);
-  }
-  /* Safari fills the status bar over scrolled content, but once the toolbar collapses it
-     shows the page behind it. Do the same at the bottom: the bar colour from the edge of
-     the viewport down, with content fading into it just above. */
-  html::after {
-    content: "";
-    position: fixed; left: 0; right: 0; top: calc(100% - 2.5rem); height: calc(2.5rem + 50vh);
-    z-index: 45;
-    pointer-events: none;
-    background: var(--bar);
-    -webkit-mask-image: linear-gradient(transparent, rgb(0 0 0 / 0.16) 0.625rem, rgb(0 0 0 / 0.5) 1.25rem, rgb(0 0 0 / 0.84) 1.875rem, #000 2.5rem);
-    mask-image: linear-gradient(transparent, rgb(0 0 0 / 0.16) 0.625rem, rgb(0 0 0 / 0.5) 1.25rem, rgb(0 0 0 / 0.84) 1.875rem, #000 2.5rem);
   }
 }
 
@@ -431,10 +420,11 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   }
   .nav-current { display: block; font-size: var(--step--1); color: var(--ink-2); font-weight: 500; }
   /* Collapse by max-height: a 0fr grid row centres its child instead of
-     clipping it here, which spills the links over the page. */
+     clipping it here, which spills the links over the page. Clip vertically only:
+     a link's pill springs slightly past its row, and clipping that cuts its ends. */
   .nav-menu {
     order: 3; flex-basis: 100%;
-    display: block; overflow: hidden; max-height: 0;
+    display: block; overflow-x: visible; overflow-y: clip; max-height: 0;
     transition: max-height 0.45s var(--ease);
   }
   .nav-menu > .nav-menu-inner { display: flex; flex-direction: column; padding-top: 0.6rem; }
