@@ -14,10 +14,11 @@
     </a>
 
     <h1 class="display" id="hero-name">
-      {%- for part in name_parts %}<span class="line">{{ part }}</span>{% endfor -%}
+      {%- for part in name_parts %} <span class="line">{{ part }}</span>{% endfor -%}
     </h1>
 
     <p class="lead">{{ page.tagline | markdownify | remove: "<p>" | remove: "</p>" }}</p>
+    <p class="hero-intro">{{ page.intro }}</p>
 
     <div class="cta-row">
       <a class="btn lg btn-primary" href="{{ linkedin.url }}" target="_blank" rel="noopener">

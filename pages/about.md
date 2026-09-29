@@ -4,6 +4,8 @@ title: About
 description: Solution architect at IBM, working on application modernization, integration and microservices, and on digital transformation with teams and startups.
 permalink: /about/
 nav: about
+seo:
+  type: AboutPage   # jekyll-seo-tag otherwise marks /about/ as the WebSite, competing with the home page
 ---
 
 I am **{{ site.author.name }}**, a solution architect.
