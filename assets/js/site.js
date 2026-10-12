@@ -66,8 +66,9 @@
     await new Promise((r) => setTimeout(r, out.length ? 120 : 0));   // a timer, not the animation: frames can stall
     root.classList.add("theme-switch", "theme-fade");
     setTheme(wanted, true);
-    out.forEach((a) => a.cancel());
-    fade(0, 1, 200);
+    // the background leads: the content comes back once it has mostly arrived, rather
+    // than dark text fading in over a still-dark background (or light over light)
+    setTimeout(() => { out.forEach((a) => a.cancel()); fade(0, 1, 200); }, out.length ? 120 : 0);
     // Done when the background has arrived; a tap that reversed it cancels these and
     // waits on its own.
     Promise.all(root.getAnimations().map((a) => a.finished)).then(() => {

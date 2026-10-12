@@ -861,7 +861,7 @@ a.card:active { transform: scale(0.985); transition-duration: 0.12s; }
 :root.theme-fade {
   /* only the background and what's built from it (the iOS bars) glide; the content
      fades out and back in around the switch (site.js), so no muddy middle shows */
-  transition: 0.35s var(--ease);
+  transition: 0.28s var(--ease);
   transition-property: --bg, --pool-1, --pool-2, --pool-3, --pool-4;
 }
 @media (min-width: 861px) {
