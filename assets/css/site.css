@@ -214,6 +214,7 @@ body::before {
   transition: opacity 0.4s var(--ease);
 }
 body.is-scrolled .scroll-edge { opacity: 1; }
+.bar-tint { display: none; }   /* iOS only, below */
 /* Where supported, the fade follows the finger instead of switching on at 24px. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: scroll()) {
@@ -240,6 +241,14 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   body { background-color: var(--bar); }
   body::before { inset: 0; clip-path: inset(0); }   /* its blur would glow past the edges */
   .scroll-edge { --edge: var(--bar); }
+  /* Safari 26 ignores theme-color and paints the status bar from the fixed element at
+     the top edge, reading that element's background-color (not its pixels). With none
+     there, the bar kept the old theme's colour after a theme switch. This strip carries
+     the current one; at 12% over the same colour it can't be seen. */
+  .bar-tint {
+    display: block; position: fixed; inset: 0 0 auto 0; height: 12px; z-index: 60;
+    background-color: var(--bar); opacity: 0.12; pointer-events: none;
+  }
   body::after {
     --fade: var(--bar), color-mix(in oklab, var(--bar) 84%, transparent) 25%,
       color-mix(in oklab, var(--bar) 50%, transparent) 50%,

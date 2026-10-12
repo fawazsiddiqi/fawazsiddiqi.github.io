@@ -14,6 +14,10 @@
         var saved = localStorage.getItem("theme-choice");
         var dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
         document.documentElement.dataset.theme = dark ? "dark" : "light";
+        // Browser bars (iOS 18, Android) take theme-color, which the tags above key to the
+        // system's scheme. Give both the chosen theme's colour; site.js refines it.
+        var bar = document.querySelector('meta[name="theme-color"][media*="' + (dark ? "dark" : "light") + '"]').content;
+        document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = bar; });
       } catch (e) {}
       // A page-to-page transition can be cancelled midway (a second click, a reload,
       // the tab hidden). The browser then rejects its promise; handle it so that is
@@ -61,6 +65,7 @@
   <a class="skip" href="#main">Skip to content</a>
   <canvas id="bg" aria-hidden="true"></canvas>
   <div class="scroll-edge" aria-hidden="true"></div>
+  <div class="bar-tint" aria-hidden="true"></div>
 
   {% include nav.html %}
 

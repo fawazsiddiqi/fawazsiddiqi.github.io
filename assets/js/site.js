@@ -25,11 +25,13 @@
   const systemDark = matchMedia("(prefers-color-scheme: dark)");
   let wanted = root.dataset.theme || "dark";   // what the last tap asked for, applied or not
   let wipe = null;                              // the theme transition while it runs
+  const iosSafari = CSS.supports("-webkit-touch-callout", "none");   // the same test as site.css
 
   // Only a tap saves a choice (`save`), and a choice that matches the system clears
   // it instead, so the site goes back to following the system. The key was renamed
   // from "theme", which the old code wrote on every page load.
   function setTheme(next, save) {
+    const changed = root.dataset.theme !== next;
     wanted = next;
     root.dataset.theme = next;
     if (save) {
@@ -37,6 +39,18 @@
         if (next === (systemDark.matches ? "dark" : "light")) localStorage.removeItem("theme-choice");
         else localStorage.setItem("theme-choice", next);
       } catch (e) { /* private mode */ }
+    }
+    // Browser bars that read theme-color (iOS 18, Android) get the page's own background,
+    // which on iOS is the colour its top edge fades into.
+    const bg = getComputedStyle(document.body).backgroundColor;
+    $$('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", bg));
+    // Safari 26 can keep the old status bar colour after a theme switch; a same-document
+    // navigation makes it read the page again. Hop to a hash and straight back, so the
+    // URL and history end up unchanged.
+    if (changed && iosSafari) {
+      const url = location.href;
+      history.replaceState(history.state, "", "#theme");
+      history.replaceState(history.state, "", url);
     }
     if (themeBtn) themeBtn.setAttribute("aria-label", next === "dark" ? "Switch to light theme" : "Switch to dark theme");
     document.dispatchEvent(new CustomEvent("themechange", { detail: next }));
