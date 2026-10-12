@@ -54,7 +54,7 @@ const startLightField = () => {
     void main() {
       vec2 uv = gl_FragCoord.xy / u_res;
       vec2 p = vec2(uv.x * (u_res.x / u_res.y), uv.y);
-      float t = u_time * 0.035;
+      float t = u_time * 0.12;   // fast enough that the pools visibly drift, slow enough to stay calm
 
       // domain warp keeps the pools organic instead of round
       vec2 q = vec2(fbm(p * 1.25 + t), fbm(p * 1.25 + vec2(3.1, 1.7) - t));
