@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#eef1f7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#06070d" media="(prefers-color-scheme: dark)">
 
-  <script>
+  {%- comment %} data-cfasync="false": Cloudflare's Rocket Loader otherwise rewrites every script
+      and holds it back until its own loader has run, which delays the pre-paint theme. {% endcomment %}
+  <script data-cfasync="false">
     // Theme before first paint: saved choice wins, otherwise follow the system.
     (function () {
       try {
@@ -57,8 +59,8 @@
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
 
-  <script src="{{ '/assets/js/site.js' | relative_url }}?v={{ v }}" defer></script>
-  <script src="{{ '/assets/js/liquid.js' | relative_url }}?v={{ v }}" defer></script>
+  <script src="{{ '/assets/js/site.js' | relative_url }}?v={{ v }}" defer data-cfasync="false"></script>
+  <script src="{{ '/assets/js/liquid.js' | relative_url }}?v={{ v }}" defer data-cfasync="false"></script>
 </head>
 
 <body>
