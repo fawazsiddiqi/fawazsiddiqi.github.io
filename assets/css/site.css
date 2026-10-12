@@ -846,9 +846,11 @@ a.card:active { transform: scale(0.985); transition-duration: 0.12s; }
 }
 
 /* Page-to-page transitions (Chrome, Edge, Safari 18.2+; elsewhere a plain load).
-   The nav is its own layer so it holds still while the page cross-fades, and the
-   active pill morphs from the old link to the new one. Desktop only for the pill:
-   on phones it lives inside the collapsed menu. */
+   The page cross-fades and the active pill morphs from the old link to the new one.
+   The nav itself stays part of the page: it's the same on every page, so it holds
+   still anyway, and as a layer of its own its glass was snapshotted as a flat
+   rectangle (a box around the capsule in Safari). Desktop only for the pill: on
+   phones it lives inside the collapsed menu. */
 @view-transition { navigation: auto; }
 /* Not on iOS: while a view transition's overlay is up, Safari fills its status bar and
    toolbar with solid colour, which then vanishes. Pages load plainly there, and the
@@ -862,7 +864,6 @@ a.card:active { transform: scale(0.985); transition-duration: 0.12s; }
     --pool-1, --pool-2, --pool-3, --pool-4, --panel, --panel-solid, --panel-flat,
     --nav-tint, --clear, --hairline, --edge, --specular, --code-bg;
 }
-.nav { view-transition-name: site-nav; }
 @media (min-width: 861px) {
   .nav-link[aria-current] .nav-pill { view-transition-name: nav-pill; }
 }
@@ -870,11 +871,11 @@ a.card:active { transform: scale(0.985); transition-duration: 0.12s; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.3s; }
 /* A theme switch (site.js) is one wipe, or one cross-fade with reduced motion.
    Colour transitions inside it would start only once it began, fading the new
-   page in from the old colours; the nav and pill change with the page instead of
-   as layers of their own; and the wipe has no cross-fade under it, which washed
-   the page out. */
+   page in from the old colours; the pill changes with the page instead of as a
+   layer of its own; and the wipe has no cross-fade under it, which washed the
+   page out. */
 .theme-switch *, .theme-switch *::before, .theme-switch *::after { transition: none !important; }
-.theme-switch .nav, .theme-switch .nav-pill { view-transition-name: none !important; }
+.theme-switch .nav-pill { view-transition-name: none !important; }
 @media (prefers-reduced-motion: no-preference) {
   .theme-switch::view-transition-old(root), .theme-switch::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 }
