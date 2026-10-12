@@ -63,6 +63,29 @@
   --ease: cubic-bezier(0.22, 0.8, 0.28, 1);
 }
 
+/* The theme colours are typed so they can transition: on iOS a theme switch fades them
+   in place (.theme-fade, section 9), and everything built from them follows, gradients
+   included. */
+@property --bg { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --ink { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --ink-2 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --ink-3 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --accent { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --accent-ink { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --pool-1 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --pool-2 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --pool-3 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --pool-4 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --panel { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --panel-solid { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --panel-flat { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --nav-tint { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --clear { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --hairline { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --edge { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --specular { syntax: "<color>"; inherits: true; initial-value: transparent; }
+@property --code-bg { syntax: "<color>"; inherits: true; initial-value: transparent; }
+
 :root[data-theme="light"] {
   --bg: #eef1f7;
   --ink: #0b0d14;
@@ -238,22 +261,16 @@ body::before {
    colour. So on iOS that colour comes from the gradient, and the gradient's edges blend
    into it: the bars read as part of the page. A fixed element at the top edge would
    make Safari paint the status bar solid in its colour, so none sits there. Nothing
-   fixed may reach past the visible area either, because iOS shows it behind the bars;
-   the top fade is the exception, on purpose.
+   fixed may reach past the visible area either, because iOS shows it behind the bars.
    (-webkit-touch-callout is only supported on iOS.) */
 @supports (-webkit-touch-callout: none) {
   :root { --bar: color-mix(in oklab, var(--bg) 82%, color-mix(in oklab, var(--pool-1), var(--pool-3))); }
   body { background-color: var(--bar); }
   body::before { inset: 0; clip-path: inset(0); }   /* its blur would glow past the edges */
-  /* The top fade reaches up behind the status bar, so content scrolling under it softens
-     as it does under the nav: full strength across the bar, then the same fade as before. */
-  :root::before {
-    --edge: var(--bar);
-    top: -5rem; height: calc(var(--nav-h) + 8rem);
-    background: linear-gradient(to bottom, color-mix(in oklab, var(--edge) 62%, transparent) 5rem, transparent);
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(5rem + (var(--nav-h) + 3rem) * 0.35), transparent);
-    mask-image: linear-gradient(to bottom, #000 calc(5rem + (var(--nav-h) + 3rem) * 0.35), transparent);
-  }
+  /* No fade over the content at the top: Safari treats the area under its status bar
+     itself, and a fade of ours restarting just below that bar read as a band above the
+     nav. Content scrolls under the top as it does under the toolbar. */
+  :root::before { content: none; }
   body::after {
     --fade: var(--bar), color-mix(in oklab, var(--bar) 84%, transparent) 25%,
       color-mix(in oklab, var(--bar) 50%, transparent) 50%,
@@ -833,6 +850,18 @@ a.card:active { transform: scale(0.985); transition-duration: 0.12s; }
    active pill morphs from the old link to the new one. Desktop only for the pill:
    on phones it lives inside the collapsed menu. */
 @view-transition { navigation: auto; }
+/* Not on iOS: while a view transition's overlay is up, Safari fills its status bar and
+   toolbar with solid colour, which then vanishes. Pages load plainly there, and the
+   theme switch fades its colours in place instead (.theme-fade, site.js). */
+@supports (-webkit-touch-callout: none) {
+  @view-transition { navigation: none; }
+}
+:root.theme-fade {
+  transition: 0.5s linear;   /* the same 0.5s as the light field's tween (liquid.js) */
+  transition-property: --bg, --ink, --ink-2, --ink-3, --accent, --accent-ink,
+    --pool-1, --pool-2, --pool-3, --pool-4, --panel, --panel-solid, --panel-flat,
+    --nav-tint, --clear, --hairline, --edge, --specular, --code-bg;
+}
 .nav { view-transition-name: site-nav; }
 @media (min-width: 861px) {
   .nav-link[aria-current] .nav-pill { view-transition-name: nav-pill; }

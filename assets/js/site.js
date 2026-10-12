@@ -31,7 +31,6 @@
   // it instead, so the site goes back to following the system. The key was renamed
   // from "theme", which the old code wrote on every page load.
   function setTheme(next, save) {
-    const changed = root.dataset.theme !== next;
     wanted = next;
     root.dataset.theme = next;
     if (save) {
@@ -40,27 +39,38 @@
         else localStorage.setItem("theme-choice", next);
       } catch (e) { /* private mode */ }
     }
-    // Browser bars that read theme-color (iOS 18, Android) get the page's own background,
-    // which on iOS is the colour its top edge fades into.
-    const bg = getComputedStyle(document.body).backgroundColor;
-    $$('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", bg));
-    // Safari 26 can keep the old status bar colour after a theme switch; a same-document
-    // navigation makes it read the page again. Hop to a hash and straight back, so the
-    // URL and history end up unchanged.
-    if (changed && iosSafari) {
-      const url = location.href;
-      history.replaceState(history.state, "", "#theme");
-      history.replaceState(history.state, "", url);
-    }
+    syncBars();
     if (themeBtn) themeBtn.setAttribute("aria-label", next === "dark" ? "Switch to light theme" : "Switch to dark theme");
     document.dispatchEvent(new CustomEvent("themechange", { detail: next }));
+  }
+
+  // Browser bars that read theme-color (iOS 18, Android) get the page's own background,
+  // which on iOS is the colour its top edge fades into.
+  function syncBars() {
+    const bg = getComputedStyle(document.body).backgroundColor;
+    $$('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", bg));
+  }
+
+  // iOS: while a view transition's overlay is up, Safari fills its status bar and toolbar
+  // with solid colour. So there the theme colours fade in place (.theme-fade in site.css)
+  // and the page shows through the bars the whole time. A tap mid-fade turns it around.
+  function fadeTheme(next) {
+    root.classList.add("theme-switch", "theme-fade");
+    setTheme(next, true);
+    // Done when the colours have arrived; a tap that reversed them cancels these and
+    // waits on its own.
+    Promise.all(root.getAnimations().map((a) => a.finished)).then(() => {
+      if (root.getAnimations().length) return;
+      root.classList.remove("theme-switch", "theme-fade");
+      syncBars();
+    }, () => {});
   }
 
   function toggleTheme() {
     const next = wanted === "dark" ? "light" : "dark";
     // A tap during the wipe is a change of mind: end the wipe and take it at once.
     if (wipe) { wipe.skipTransition(); return setTheme(next, true); }
-    if (!document.startViewTransition) return setTheme(next, true);
+    if (iosSafari || !document.startViewTransition) return fadeTheme(next);
     wanted = next;
 
     // circular wipe out of the toggle (reduced motion keeps the plain cross-fade);

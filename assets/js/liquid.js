@@ -1,6 +1,7 @@
 /* fawazsiddiqi.dev — the light field behind the glass.
    One fullscreen WebGL quad: four colour pools drifting through warped noise.
-   Colours come from the CSS theme tokens, so a theme switch tweens them.
+   Colours come from the CSS theme tokens, read every frame, so a theme switch carries
+   the field with it.
    If anything here fails, the CSS gradient on body::before stays visible. */
 const startLightField = () => {
   "use strict";
@@ -109,29 +110,23 @@ const startLightField = () => {
 
   /* ---------- colours from the CSS tokens ---------------------------- */
 
+  // Read on every frame, so the field follows the page through a theme switch: on iOS
+  // the tokens fade over 0.5s (.theme-fade in site.css). They're registered as <color>,
+  // which is also why they read back as rgb() rather than as the hex they're written in.
   const TOKENS = ["--bg", "--pool-1", "--pool-2", "--pool-3", "--pool-4"];
-  const parse = (hex) => {
-    const h = hex.trim().replace("#", "");
-    const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
-    const n = parseInt(full, 16);
-    return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+  const parse = (v) => {
+    v = v.trim();
+    if (v[0] === "#") {   // a browser without @property hands back the raw token
+      const h = v.length === 4 ? v.slice(1).replace(/./g, "$&$&") : v.slice(1);
+      const n = parseInt(h, 16);
+      return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+    }
+    return (v.match(/[\d.]+/g) || [0, 0, 0]).slice(0, 3).map((x) => x / 255);
   };
   const readTokens = () => {
     const cs = getComputedStyle(document.documentElement);
     return TOKENS.map((t) => parse(cs.getPropertyValue(t) || "#000"));
   };
-
-  let colors = readTokens();
-  let from = colors.map((c) => c.slice());
-  let to = colors.map((c) => c.slice());
-  let mixStart = 0;
-  const MIX_MS = 700;
-
-  document.addEventListener("themechange", () => {
-    from = colors.map((c) => c.slice());
-    to = readTokens();
-    mixStart = performance.now();
-  });
 
   /* ---------- size, pointer, scroll ---------------------------------- */
 
@@ -186,9 +181,7 @@ const startLightField = () => {
   let running = true;
 
   function render(now) {
-    const k = mixStart ? Math.min((now - mixStart) / MIX_MS, 1) : 1;
-    colors = to.map((c, i) => c.map((v, j) => from[i][j] + (v - from[i][j]) * k));
-
+    const colors = readTokens();
     ptr = [ptr[0] + (ptrTarget[0] - ptr[0]) * 0.06, ptr[1] + (ptrTarget[1] - ptr[1]) * 0.06];
     scroll += (scrollTarget - scroll) * 0.08;
 
@@ -223,8 +216,8 @@ const startLightField = () => {
   if (reduceMotion.matches) {
     running = false;
     render(performance.now());
-    // no tween: draw the new colours at once, in the same frame as the rest of the page
-    document.addEventListener("themechange", () => { mixStart = 0; render(performance.now()); });
+    // nothing is animating: redraw once with the new colours, with the rest of the page
+    document.addEventListener("themechange", () => render(performance.now()));
   } else {
     requestAnimationFrame(loop);
   }
