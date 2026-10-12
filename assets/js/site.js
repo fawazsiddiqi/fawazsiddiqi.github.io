@@ -177,7 +177,7 @@
   let scrollRaf = 0;
   function onScrollFrame() {
     scrollRaf = 0;
-    document.body.classList.toggle("is-scrolled", scrollY > 24);
+    root.classList.toggle("is-scrolled", scrollY > 24);
     queueLight();
   }
   addEventListener("scroll", () => { if (!scrollRaf) scrollRaf = requestAnimationFrame(onScrollFrame); }, { passive: true });

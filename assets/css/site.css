@@ -202,8 +202,11 @@ body::before {
 }
 #bg.is-ready { opacity: 1; }
 
-/* the fade that keeps content from colliding with the floating nav */
-.scroll-edge {
+/* The fade that keeps content from colliding with the floating nav. A pseudo-element,
+   not a div: Safari 26 paints its status bar solid from a fixed element at the top
+   edge, and pseudo-elements don't count, so the page shows through there instead. */
+:root::before {
+  content: "";
   position: fixed; inset: 0 0 auto 0; height: calc(var(--nav-h) + 3rem); z-index: 40;
   pointer-events: none;
   --edge: var(--bg);
@@ -213,12 +216,11 @@ body::before {
   opacity: 0;
   transition: opacity 0.4s var(--ease);
 }
-body.is-scrolled .scroll-edge { opacity: 1; }
-.bar-tint { display: none; }   /* iOS only, below */
+:root.is-scrolled::before { opacity: 1; }
 /* Where supported, the fade follows the finger instead of switching on at 24px. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: scroll()) {
-    .scroll-edge {
+    :root::before {
       transition: none;
       animation: scroll-edge-in linear both;
       animation-timeline: scroll(root);
@@ -231,23 +233,26 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   }
 }
 
-/* iOS Safari (26+) fills its status bar and toolbar with the body's background colour.
-   So on iOS that colour comes from the gradient, and the gradient's edges blend into it:
-   the bars read as part of the page. Nothing fixed may reach past the visible area,
-   because iOS shows it behind the bars once the page scrolls or the toolbar shrinks.
+/* iOS Safari 26 shows the page through its status bar and toolbar, and where no page is
+   behind them (at either end of a scroll) it fills them with the body's background
+   colour. So on iOS that colour comes from the gradient, and the gradient's edges blend
+   into it: the bars read as part of the page. A fixed element at the top edge would
+   make Safari paint the status bar solid in its colour, so none sits there. Nothing
+   fixed may reach past the visible area either, because iOS shows it behind the bars;
+   the top fade is the exception, on purpose.
    (-webkit-touch-callout is only supported on iOS.) */
 @supports (-webkit-touch-callout: none) {
   :root { --bar: color-mix(in oklab, var(--bg) 82%, color-mix(in oklab, var(--pool-1), var(--pool-3))); }
   body { background-color: var(--bar); }
   body::before { inset: 0; clip-path: inset(0); }   /* its blur would glow past the edges */
-  .scroll-edge { --edge: var(--bar); }
-  /* Safari 26 ignores theme-color and paints the status bar from the fixed element at
-     the top edge, reading that element's background-color (not its pixels). With none
-     there, the bar kept the old theme's colour after a theme switch. This strip carries
-     the current one; at 12% over the same colour it can't be seen. */
-  .bar-tint {
-    display: block; position: fixed; inset: 0 0 auto 0; height: 12px; z-index: 60;
-    background-color: var(--bar); opacity: 0.12; pointer-events: none;
+  /* The top fade reaches up behind the status bar, so content scrolling under it softens
+     as it does under the nav: full strength across the bar, then the same fade as before. */
+  :root::before {
+    --edge: var(--bar);
+    top: -5rem; height: calc(var(--nav-h) + 8rem);
+    background: linear-gradient(to bottom, color-mix(in oklab, var(--edge) 62%, transparent) 5rem, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(5rem + (var(--nav-h) + 3rem) * 0.35), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(5rem + (var(--nav-h) + 3rem) * 0.35), transparent);
   }
   body::after {
     --fade: var(--bar), color-mix(in oklab, var(--bar) 84%, transparent) 25%,
