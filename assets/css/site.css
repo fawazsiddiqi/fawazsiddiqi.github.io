@@ -267,12 +267,6 @@ body::before {
   :root { --bar: color-mix(in oklab, var(--bg) 82%, color-mix(in oklab, var(--pool-1), var(--pool-3))); }
   body { background-color: var(--bar); }
   body::before { inset: 0; clip-path: inset(0); }   /* its blur would glow past the edges */
-  /* Pages swap without a view transition here (see @view-transition below), so the new
-     page's content fades in over the background and nav, which stay put. */
-  @media (prefers-reduced-motion: no-preference) {
-    main { animation: page-in 0.3s var(--ease) both; }
-    @keyframes page-in { from { opacity: 0; } }
-  }
   /* No fade over the content at the top: Safari treats the area under its status bar
      itself, and a fade of ours restarting just below that bar read as a band above the
      nav. Content scrolls under the top as it does under the toolbar. */

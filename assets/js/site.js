@@ -151,6 +151,53 @@
     document.addEventListener("pointerdown", (e) => { if (!nav.contains(e.target)) closeMenu(); });
   }
 
+  /* ---------- iOS: change pages in place -------------------------------- */
+  // A real page load in iOS Safari cuts hard and flickers its status bar, and a view
+  // transition there paints its bars solid. So on iOS, links within the site swap the
+  // page's content in place: fetch the page, fade the old content out and the new in,
+  // and keep the nav and the light field running. Anything unexpected loads normally.
+
+  const main = $("#main");
+  const footer = $(".site-footer");
+  async function go(url, push) {
+    closeMenu();
+    // the fade-out holds at 0 until the swap; the fade-in leaves nothing behind, so the
+    // content can never be left hidden
+    const fade = (from, to, ms) => (reduceMotion.matches ? null : main.animate({ opacity: [from, to] }, { duration: ms, easing: "ease-out", fill: to ? "none" : "forwards" }));
+    const out = fade(1, 0, 140);
+    let doc;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(res.status);
+      doc = new DOMParser().parseFromString(await res.text(), "text/html");
+    } catch (e) { return location.assign(url); }
+    const next = doc.getElementById("main");
+    if (!next) return location.assign(url);   // e.g. a redirect stub
+    await out?.finished;
+    main.innerHTML = next.innerHTML;
+    footer.innerHTML = doc.querySelector(".site-footer")?.innerHTML ?? footer.innerHTML;
+    document.title = doc.title;
+    const links = doc.querySelectorAll(".nav-link");
+    $$(".nav-link").forEach((a, i) => (links[i]?.hasAttribute("aria-current") ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
+    $(".nav-current").textContent = doc.querySelector(".nav-current")?.textContent ?? "";
+    if (push) history.pushState(null, "", url);
+    scrollTo(0, 0);
+    out?.cancel();
+    fade(0, 1, 220);
+  }
+
+  if (iosSafari && main && footer) {
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest("a[href]");
+      if (!a || e.defaultPrevented || a.target || a.hasAttribute("download") || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const url = new URL(a.href, location.href);
+      if (url.origin !== location.origin || (url.hash && url.pathname === location.pathname)) return;
+      e.preventDefault();
+      if (url.href !== location.href) go(url.href, true);
+    });
+    addEventListener("popstate", () => go(location.href, false));
+  }
+
   /* ---------- pointer lighting ----------------------------------------- */
 
   const lit = new Set();
