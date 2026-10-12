@@ -164,6 +164,16 @@ const startLightField = () => {
     scrollTarget = Math.min(scrollY / max, 1);
   }, { passive: true });
 
+  // The pointer glow and the scroll drift carry over from the previous page, so the field
+  // picks up where it was and eases into place, rather than jumping on a page change.
+  try {
+    const was = JSON.parse(sessionStorage.getItem("lf-state"));
+    if (was) { ptr = ptrTarget = was.ptr; scroll = was.scroll; }
+  } catch (e) { /* storage blocked or nothing saved */ }
+  addEventListener("pagehide", () => {
+    try { sessionStorage.setItem("lf-state", JSON.stringify({ ptr, scroll })); } catch (e) { /* storage blocked */ }
+  });
+
   /* ---------- draw ---------------------------------------------------- */
 
   // One clock per visit, so moving between pages continues the field where it
@@ -213,9 +223,11 @@ const startLightField = () => {
     if (running) requestAnimationFrame(loop);
   });
 
+  // Draw at once rather than on the next frame, so a page arrived at from another one
+  // paints its very first frame with the field.
+  render(performance.now());
   if (reduceMotion.matches) {
     running = false;
-    render(performance.now());
     // nothing is animating: redraw once with the new colours, with the rest of the page
     document.addEventListener("themechange", () => render(performance.now()));
   } else {
@@ -223,6 +235,11 @@ const startLightField = () => {
   }
 };
 
-// Creating the WebGL context costs real main-thread time, so start once the page
-// is interactive. The CSS gradient covers the gap.
-(window.requestIdleCallback || ((fn) => setTimeout(fn, 200)))(startLightField, { timeout: 1500 });
+// Creating the WebGL context costs real main-thread time, so a first visit starts once
+// the page is interactive, with the CSS gradient covering the gap. Arriving from another
+// page of the site, start at once: the new page's first frame then already has the field,
+// instead of showing the gradient and swapping the whole background a moment later.
+let arriving = false;
+try { arriving = !!sessionStorage.getItem("lf-epoch"); } catch (e) { /* storage blocked */ }
+if (arriving) startLightField();
+else (window.requestIdleCallback || ((fn) => setTimeout(fn, 200)))(startLightField, { timeout: 1500 });
