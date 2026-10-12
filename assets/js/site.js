@@ -54,10 +54,21 @@
   // iOS: while a view transition's overlay is up, Safari fills its status bar and toolbar
   // with solid colour. So there the theme colours fade in place (.theme-fade in site.css)
   // and the page shows through the bars the whole time. A tap mid-fade turns it around.
-  function fadeTheme(next) {
+  // The content and nav fade out, the theme switches while they're hidden, and they fade
+  // back in already in the new colours: fading text and panels through each other's
+  // colours passed through a grey where the text all but vanished.
+  async function fadeTheme(next) {
+    wanted = next;   // a quick second tap counts from here
+    const layers = [$("#main"), $(".nav-wrap"), $(".site-footer")].filter(Boolean);
+    const fade = (from, to, ms) => (reduceMotion.matches ? [] : layers.map((el) =>
+      el.animate({ opacity: [from, to] }, { duration: ms, easing: "ease-out", fill: to ? "none" : "forwards" })));
+    const out = fade(1, 0, 120);
+    await new Promise((r) => setTimeout(r, out.length ? 120 : 0));   // a timer, not the animation: frames can stall
     root.classList.add("theme-switch", "theme-fade");
-    setTheme(next, true);
-    // Done when the colours have arrived; a tap that reversed them cancels these and
+    setTheme(wanted, true);
+    out.forEach((a) => a.cancel());
+    fade(0, 1, 200);
+    // Done when the background has arrived; a tap that reversed it cancels these and
     // waits on its own.
     Promise.all(root.getAnimations().map((a) => a.finished)).then(() => {
       if (root.getAnimations().length) return;
@@ -65,6 +76,7 @@
       syncBars();
     }, () => {});
   }
+
 
   function toggleTheme() {
     const next = wanted === "dark" ? "light" : "dark";
