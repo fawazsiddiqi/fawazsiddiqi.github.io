@@ -55,10 +55,11 @@
   --r-sm: 10px;
   --r-pill: 999px;
 
-  /* spring with overshoot (droplet, gel press) */
-  --spring: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017,
-      1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%,
-      1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1.004 83.8%, 1);
+  /* Apple's default spring: critically damped (damping 1.0), so it settles without
+     overshoot. Bounce is for flicks and throws, and nothing here is thrown.
+     At 0.45-0.6s this is a response of about 0.3-0.4s. */
+  --spring: linear(0, 0.114, 0.321, 0.517, 0.671, 0.783, 0.860, 0.911, 0.945, 0.966, 0.979,
+      0.987, 0.992, 0.995, 0.997, 0.998, 1);
   --ease: cubic-bezier(0.22, 0.8, 0.28, 1);
 }
 
@@ -302,7 +303,9 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   transition: transform 0.55s var(--spring), background-color 0.3s var(--ease);
   will-change: transform;
 }
-.btn:hover { transform: translateY(-2px); }
+/* Hover only where there is a pointer that hovers: on a phone a tapped element
+   would keep its hover state. Presses work everywhere. */
+@media (hover: hover) { .btn:hover { transform: translateY(-2px); } }
 .btn:active { transform: scale(0.955); transition-duration: 0.12s; }
 .btn-primary {
   --lg-tint: var(--accent);
@@ -316,15 +319,17 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   padding: 0.45rem 0.95rem 0.45rem 0.45rem;
   font-size: var(--step--1); text-decoration: none; color: var(--ink-2);
   border-radius: var(--r-pill);
+  transition: transform 0.55s var(--spring);
 }
+.chip:active { transform: scale(0.97); transition-duration: 0.1s; }
 
 .icon-btn {
   display: grid; place-items: center;
-  width: 42px; height: 42px; border-radius: 50%;
+  width: 44px; height: 44px; border-radius: 50%;   /* Apple's minimum hit target */
   color: var(--ink-2); text-decoration: none; cursor: pointer;
   transition: transform 0.55s var(--spring), color 0.25s var(--ease);
 }
-.icon-btn:hover { transform: translateY(-2px) scale(1.06); color: var(--ink); }
+@media (hover: hover) { .icon-btn:hover { transform: translateY(-2px) scale(1.06); color: var(--ink); } }
 .icon-btn:active { transform: scale(0.92); transition-duration: 0.1s; }
 .i { width: 18px; height: 18px; fill: currentColor; flex: none; }
 
@@ -348,6 +353,7 @@ body.is-scrolled .scroll-edge { opacity: 1; }
 }
 
 .nav-brand {
+  position: relative;
   display: grid; place-items: center;
   width: 34px; height: 34px; border-radius: 50%;
   font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em;
@@ -356,7 +362,15 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   color: #fff;
   transition: transform 0.55s var(--spring);
 }
-.nav-brand:hover { transform: rotate(-8deg) scale(1.08); }
+@media (hover: hover) { .nav-brand:hover { transform: rotate(-8deg) scale(1.08); } }
+.nav-brand:active { transform: scale(0.92); transition-duration: 0.1s; }
+
+/* The nav's 34px controls get a 44px hit area (Apple's minimum) without growing
+   the capsule: 5px fits inside its padding and the gaps between them. */
+.nav-brand::before, .theme-btn::before, .nav-toggle::before {
+  content: ""; position: absolute; inset: -5px;
+}
+.nav-toggle::before { inset: -5px 0; }
 
 .nav-menu { position: relative; display: flex; align-items: center; }
 
@@ -368,7 +382,7 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   border-radius: var(--r-pill);
   transition: color 0.3s var(--ease);
 }
-.nav-link:hover { color: var(--ink); }
+@media (hover: hover) { .nav-link:hover { color: var(--ink); } }
 .nav-link[aria-current] { color: var(--ink); }
 .nav-label { position: relative; }
 
@@ -383,18 +397,20 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   scale: 0.9;
   transition: opacity 0.3s var(--ease), scale 0.5s var(--spring);
 }
-.nav-link:hover .nav-pill { opacity: 0.45; scale: 1; }
+@media (hover: hover) { .nav-link:hover .nav-pill { opacity: 0.45; scale: 1; } }
 .nav-link[aria-current] .nav-pill { opacity: 1; scale: 1; }
-
+.nav-link:active .nav-pill { opacity: 0.6; scale: 0.96; transition-duration: 0.1s; }
 
 .theme-btn, .nav-toggle {
+  position: relative;
   display: grid; place-items: center;
   width: 34px; height: 34px; border-radius: 50%;
   color: var(--ink-2); cursor: pointer;
   transition: transform 0.55s var(--spring), color 0.25s var(--ease);
 }
-.theme-btn:hover { color: var(--ink); transform: scale(1.1); }
+@media (hover: hover) { .theme-btn:hover { color: var(--ink); transform: scale(1.1); } }
 .theme-btn:active { transform: scale(0.9); transition-duration: 0.1s; }
+.nav-toggle:active { transform: scale(0.97); transition-duration: 0.1s; }
 .theme-btn .i-moon { display: none; }
 :root[data-theme="dark"] .theme-btn .i-sun { display: none; }
 :root[data-theme="dark"] .theme-btn .i-moon { display: block; }
@@ -419,17 +435,30 @@ body.is-scrolled .scroll-edge { opacity: 1; }
   }
   .nav-current { display: block; font-size: var(--step--1); color: var(--ink-2); font-weight: 500; }
   /* Collapse by max-height: a 0fr grid row centres its child instead of
-     clipping it here, which spills the links over the page. Clip vertically only:
-     a link's pill springs slightly past its row, and clipping that cuts its ends. */
+     clipping it here, which spills the links over the page. site.js sets
+     --menu-h to the links' real height, so the easing plays out in full both
+     ways instead of racing towards 70vh and stopping dead. */
   .nav-menu {
     order: 3; flex-basis: 100%;
-    display: block; overflow-x: visible; overflow-y: clip; max-height: 0;
+    display: block; overflow: clip; max-height: 0;
     transition: max-height 0.45s var(--ease);
   }
-  .nav-menu > .nav-menu-inner { display: flex; flex-direction: column; padding-top: 0.6rem; }
-  .nav[data-open] .nav-menu { max-height: 70vh; }
-  .nav[data-open] { border-radius: var(--r-xl); }
+  /* Bigger text or a landscape phone can leave too little room: then the links scroll. */
+  .nav-menu > .nav-menu-inner {
+    display: flex; flex-direction: column; padding-top: 0.6rem;
+    max-height: calc(100svh - 7rem); overflow-y: auto; overscroll-behavior: contain;
+  }
+  .nav[data-open] .nav-menu { max-height: var(--menu-h, 70vh); }
+  /* Open, the capsule becomes a sheet, and a bigger surface reads as thicker glass:
+     more blur and tint, so the page doesn't show through behind the links. */
+  .nav[data-open] {
+    border-radius: var(--r-xl);
+    --lg-tint: var(--panel);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(150%);
+  }
   .nav-link { padding: 0.7rem 0.9rem; font-size: var(--step-0); }
+  .nav-link:focus-visible { outline-offset: -2px; }   /* the scrolling list would clip a ring drawn outside it */
 }
 
 @media (min-width: 861px) {
@@ -459,7 +488,7 @@ main:has(> .hero) { display: flex; flex-direction: column; }
 
 .hero-inner { display: grid; justify-items: center; text-align: center; gap: 1.6rem; }
 
-.hero-chip { gap: 0.5rem; padding-block: 0.4rem; }
+.hero-chip { gap: 0.5rem; padding-block: 0.45rem; }   /* 44px tall: Apple's minimum hit target */
 .hero-chip img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
 .hero-chip .dot {
   width: 7px; height: 7px; border-radius: 50%;
@@ -489,6 +518,7 @@ main:has(> .hero) { display: flex; flex-direction: column; }
 .lead {
   max-width: 34ch;
   font-size: clamp(1.25rem, 1rem + 1vw, 1.65rem);
+  line-height: 1.4;   /* large text wants tighter leading than body copy */
   color: var(--ink-2);
 }
 .lead em { font-size: 1.12em; color: var(--ink); }
@@ -576,7 +606,7 @@ main > .section:first-of-type { padding-top: calc(var(--nav-h) + clamp(3.5rem, 7
 .role-dates { color: var(--ink-3); }
 .badge-now {
   display: inline-block; margin-left: 0.6rem; padding: 0.1rem 0.5rem;
-  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
   border-radius: var(--r-pill); background: var(--accent); color: var(--accent-ink);
   vertical-align: 0.15em;
 }
@@ -617,16 +647,14 @@ main > .section:first-of-type { padding-top: calc(var(--nav-h) + clamp(3.5rem, 7
   background: color-mix(in oklab, var(--ink) 7%, transparent);
   box-shadow: inset 0 0 0 1px var(--edge);
   font-size: var(--step--1);
-  transition: transform 0.5s var(--spring), background-color 0.3s var(--ease);
 }
-.skill:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--ink) 12%, transparent); }
 
 .certs { grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); }
 .cert { padding: 1.1rem 1.2rem; display: grid; gap: 0.45rem; align-content: start; }
 .cert-issuer {
   display: inline-flex; align-items: center; gap: 0.45rem;
-  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--ink-3);
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-2);   /* small text on glass: the stronger ink, not the faintest */
 }
 .cert-issuer::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .cert-year { margin-left: auto; letter-spacing: 0.08em; }
@@ -640,7 +668,8 @@ main > .section:first-of-type { padding-top: calc(var(--nav-h) + clamp(3.5rem, 7
   text-decoration: none;
   transition: transform 0.6s var(--spring);
 }
-a.card:hover { transform: translateY(-5px); }
+@media (hover: hover) { a.card:hover { transform: translateY(-5px); } }
+a.card:active { transform: scale(0.985); transition-duration: 0.12s; }
 .card-title { font-size: var(--step-1); font-weight: 580; display: flex; align-items: flex-start; gap: 0.5rem; }
 .card-title .i { margin-top: 0.3em; }
 .card-title .i { width: 14px; height: 14px; color: var(--ink-3); }
@@ -649,7 +678,7 @@ a.card:hover { transform: translateY(-5px); }
 .tools { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .tool {
   padding: 0.15rem 0.6rem; border-radius: var(--r-pill);
-  font-size: 0.72rem; color: var(--ink-2);
+  font-size: 0.75rem; color: var(--ink-2);
   box-shadow: inset 0 0 0 1px var(--edge);
 }
 .card-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem; color: var(--ink-3); font-size: var(--step--1); }
@@ -676,8 +705,9 @@ a.card:hover { transform: translateY(-5px); }
   color: var(--ink-3); font-size: var(--step--1);
 }
 .site-footer .container { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
-.site-footer a { text-decoration: none; }
-.site-footer a:hover { color: var(--ink); }
+/* padding gives the text link a 44px hit area; the negative margin keeps the layout */
+.site-footer a { text-decoration: none; display: inline-block; padding-block: 0.85rem; margin-block: -0.85rem; }
+@media (hover: hover) { .site-footer a:hover { color: var(--ink); } }
 
 /* 8. prose (posts, project pages, 404) -------------------------------------- */
 
@@ -741,19 +771,24 @@ a.card:hover { transform: translateY(-5px); }
       animation-timeline: view();
       animation-range: entry 8% entry 65%;
     }
+    /* translate and scale, not transform: the animation holds its end state, and on
+       transform that would override every hover lift and press on these elements */
     @keyframes reveal {
-      from { opacity: 0; transform: translateY(26px) scale(0.985); }
-      to { opacity: 1; transform: none; }
+      from { opacity: 0; translate: 0 26px; scale: 0.985; }
+      to { opacity: 1; translate: none; scale: none; }
     }
   }
 }
 
+/* Reduced motion swaps movement for fades rather than removing feedback:
+   nothing slides, scales or grows, but colour and opacity still change gently. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    transition-property: opacity, color, background-color !important;
+    transition-duration: 0.2s !important;
   }
 }
 
@@ -768,8 +803,15 @@ a.card:hover { transform: translateY(-5px); }
   .panel::after, .lg::after { opacity: 0.25; }
 }
 
+/* Near-solid surfaces with a defined edge. :root[data-theme] matches the theme
+   blocks' specificity, so coming later wins (plain :root never applied). */
 @media (prefers-contrast: more) {
-  :root { --ink-2: var(--ink); --ink-3: var(--ink); --edge: color-mix(in oklab, var(--ink) 35%, transparent); }
+  :root[data-theme] {
+    --ink-2: var(--ink); --ink-3: var(--ink);
+    --edge: color-mix(in oklab, var(--ink) 35%, transparent);
+    --panel: var(--panel-solid); --panel-flat: var(--panel-solid);
+    --nav-tint: var(--panel-solid); --clear: var(--panel-solid);
+  }
 }
 
 /* Page-to-page transitions (Chrome, Edge, Safari 18.2+; elsewhere a plain load).
@@ -781,8 +823,21 @@ a.card:hover { transform: translateY(-5px); }
 @media (min-width: 861px) {
   .nav-link[aria-current] .nav-pill { view-transition-name: nav-pill; }
 }
-::view-transition-group(nav-pill) { animation-duration: 0.55s; animation-timing-function: cubic-bezier(0.34, 1.3, 0.5, 1); }
+::view-transition-group(nav-pill) { animation-duration: 0.55s; animation-timing-function: var(--spring); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.3s; }
+/* A theme switch (site.js) is one wipe, or one cross-fade with reduced motion.
+   Colour transitions inside it would start only once it began, fading the new
+   page in from the old colours; the nav and pill change with the page instead of
+   as layers of their own; and the wipe has no cross-fade under it, which washed
+   the page out. */
+.theme-switch *, .theme-switch *::before, .theme-switch *::after { transition: none !important; }
+.theme-switch .nav, .theme-switch .nav-pill { view-transition-name: none !important; }
+@media (prefers-reduced-motion: no-preference) {
+  .theme-switch::view-transition-old(root), .theme-switch::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+}
+/* Reduced motion: nothing moves (the pill appears in place), but pages and the
+   theme switch still cross-fade instead of cutting. */
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  ::view-transition-group(*) { animation: none !important; }
+  ::view-transition-old(*), ::view-transition-new(*) { animation-duration: 0.2s !important; }
 }

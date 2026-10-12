@@ -15,7 +15,7 @@
         {%- assign href = post.url | relative_url -%}
         {%- assign source = nil -%}
       {%- endif -%}
-      <a class="panel post-card reveal" href="{{ href }}"{% if post.redirect_to and site.open_new_tab %} target="_blank" rel="noopener"{% endif %}>
+      <a class="panel card post-card reveal" href="{{ href }}"{% if post.redirect_to and site.open_new_tab %} target="_blank" rel="noopener"{% endif %}>
         <p class="post-meta">
           <span class="mono">{{ post.date | date: "%b %Y" }}</span>
           {%- for tag in post.tags %}<span class="tool">{{ tag }}</span>{% endfor %}

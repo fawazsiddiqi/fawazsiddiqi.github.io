@@ -87,5 +87,6 @@ Or with Ruby: `bundle install && bundle exec jekyll serve`.
   ask for reduced motion. It keeps one clock per visit, so it carries on across pages
   instead of restarting.
 
-Accessibility: `prefers-reduced-motion` and `prefers-reduced-transparency` are both
-honored, text keeps 4.5:1 contrast over the glass, and the site is keyboard navigable.
+Accessibility: `prefers-reduced-motion` (fades instead of movement),
+`prefers-reduced-transparency` and `prefers-contrast` are all honored, text keeps 4.5:1
+contrast over the glass, and the site is keyboard navigable.

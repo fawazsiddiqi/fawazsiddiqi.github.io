@@ -15,45 +15,83 @@
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
 
+  // iOS Safari only applies :active (the press states in site.css) once the page
+  // listens for touches.
+  document.addEventListener("touchstart", () => {}, { passive: true });
+
   /* ---------- theme ---------------------------------------------------- */
 
   const themeBtn = $("[data-theme-toggle]");
+  const systemDark = matchMedia("(prefers-color-scheme: dark)");
+  let wanted = root.dataset.theme || "dark";   // what the last tap asked for, applied or not
+  let wipe = null;                              // the theme transition while it runs
 
-  function setTheme(next) {
+  // Only a tap saves a choice (`save`), and a choice that matches the system clears
+  // it instead, so the site goes back to following the system. The key was renamed
+  // from "theme", which the old code wrote on every page load.
+  function setTheme(next, save) {
+    wanted = next;
     root.dataset.theme = next;
-    try { localStorage.setItem("theme", next); } catch (e) { /* private mode */ }
+    if (save) {
+      try {
+        if (next === (systemDark.matches ? "dark" : "light")) localStorage.removeItem("theme-choice");
+        else localStorage.setItem("theme-choice", next);
+      } catch (e) { /* private mode */ }
+    }
     if (themeBtn) themeBtn.setAttribute("aria-label", next === "dark" ? "Switch to light theme" : "Switch to dark theme");
     document.dispatchEvent(new CustomEvent("themechange", { detail: next }));
   }
 
-  if (themeBtn) {
-    setTheme(root.dataset.theme || "dark");
-    themeBtn.addEventListener("click", () => {
-      const next = root.dataset.theme === "dark" ? "light" : "dark";
-      if (!document.startViewTransition || reduceMotion.matches) return setTheme(next);
+  function toggleTheme() {
+    const next = wanted === "dark" ? "light" : "dark";
+    // A tap during the wipe is a change of mind: end the wipe and take it at once.
+    if (wipe) { wipe.skipTransition(); return setTheme(next, true); }
+    if (!document.startViewTransition) return setTheme(next, true);
+    wanted = next;
 
-      // circular wipe out of the toggle
-      const r = themeBtn.getBoundingClientRect();
-      const x = r.left + r.width / 2;
-      const y = r.top + r.height / 2;
-      const far = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-      // Safari can take ~1s to invoke the transition callback; apply the theme
-      // anyway after a beat so the toggle never feels stuck.
-      let applied = false;
-      const apply = () => { if (!applied) { applied = true; setTheme(next); } };
-      setTimeout(apply, 220);
-      document.startViewTransition(apply).ready.then(() => {
-        root.animate(
-          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${far}px at ${x}px ${y}px)`] },
-          { duration: 520, easing: "cubic-bezier(.3,0,.2,1)", pseudoElement: "::view-transition-new(root)" }
-        );
-      }).catch(() => { /* skipped, e.g. a page navigation started mid-wipe: the theme still applies */ });
-    });
+    // circular wipe out of the toggle (reduced motion keeps the plain cross-fade);
+    // .theme-switch tells site.css that this transition is the whole change
+    const wiping = !reduceMotion.matches;
+    root.classList.add("theme-switch");
+    const r = themeBtn.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    const far = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    // Safari can take ~1s to invoke the transition callback; apply the theme
+    // anyway after a beat so the toggle never feels stuck. It applies `wanted`,
+    // not `next`, so a late callback can't undo a tap that came after it.
+    let applied = false;
+    const apply = () => { if (!applied) { applied = true; setTheme(wanted, true); } };
+    setTimeout(apply, 220);
+    const vt = wipe = document.startViewTransition(apply);
+    vt.finished.finally(() => { root.classList.remove("theme-switch"); if (wipe === vt) wipe = null; });
+    vt.ready.then(() => {
+      if (!wiping) return;
+      root.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${far}px at ${x}px ${y}px)`] },
+        { duration: 520, easing: "cubic-bezier(.3,0,.2,1)", pseudoElement: "::view-transition-new(root)" }
+      );
+    }).catch(() => { /* skipped, e.g. a page navigation started mid-wipe: the theme still applies */ });
   }
 
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+  if (themeBtn) {
+    setTheme(wanted);
+    themeBtn.addEventListener("click", toggleTheme);
+    // While the wipe runs, Chromium and Firefox hand every tap to <html>, so the
+    // toggle never hears a second one. Catch taps here instead: on the toggle (plus
+    // its 5px of hit padding) they flip it back; anywhere else they end the wipe.
+    addEventListener("pointerdown", (e) => {
+      if (!wipe || themeBtn.contains(e.target)) return;   // WebKit still delivers them to the toggle
+      const r = themeBtn.getBoundingClientRect();
+      const onToggle = Math.abs(e.clientX - (r.left + r.width / 2)) <= r.width / 2 + 5 &&
+        Math.abs(e.clientY - (r.top + r.height / 2)) <= r.height / 2 + 5;
+      if (onToggle) toggleTheme(); else wipe.skipTransition();
+    }, true);
+  }
+
+  systemDark.addEventListener("change", (e) => {
     let saved = null;
-    try { saved = localStorage.getItem("theme"); } catch (err) { /* ignore */ }
+    try { saved = localStorage.getItem("theme-choice"); } catch (err) { /* ignore */ }
     if (!saved) setTheme(e.matches ? "dark" : "light");
   });
 
@@ -63,6 +101,10 @@
 
   const nav = $(".nav");
   const navToggle = $(".nav-toggle");
+  const menuInner = $(".nav-menu-inner");
+  // The menu opens to its links' real height (site.css caps it to the screen), so the
+  // easing plays out in full both ways.
+  const fitMenu = () => nav.style.setProperty("--menu-h", menuInner.offsetHeight + "px");
 
   function closeMenu() {
     if (!nav || !nav.hasAttribute("data-open")) return;
@@ -70,8 +112,9 @@
     navToggle?.setAttribute("aria-expanded", "false");
   }
 
-  if (navToggle && nav) {
+  if (navToggle && nav && menuInner) {
     navToggle.addEventListener("click", () => {
+      fitMenu();
       const open = nav.toggleAttribute("data-open");
       navToggle.setAttribute("aria-expanded", String(open));
     });
@@ -80,6 +123,8 @@
       closeMenu();
       navToggle.focus();
     });
+    // a tap anywhere outside the menu closes it
+    document.addEventListener("pointerdown", (e) => { if (!nav.contains(e.target)) closeMenu(); });
   }
 
   /* ---------- pointer lighting ----------------------------------------- */
@@ -233,7 +278,11 @@
   let resizeRaf = 0;
   addEventListener("resize", () => {
     if (resizeRaf) return;
-    resizeRaf = requestAnimationFrame(() => { resizeRaf = 0; refreshRefraction(); });
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = 0;
+      refreshRefraction();
+      if (nav?.hasAttribute("data-open")) fitMenu();   // e.g. the phone was rotated
+    });
   });
 
   onScrollFrame();

@@ -223,7 +223,8 @@ const startLightField = () => {
   if (reduceMotion.matches) {
     running = false;
     render(performance.now());
-    document.addEventListener("themechange", () => setTimeout(() => render(performance.now()), MIX_MS));
+    // no tween: draw the new colours at once, in the same frame as the rest of the page
+    document.addEventListener("themechange", () => { mixStart = 0; render(performance.now()); });
   } else {
     requestAnimationFrame(loop);
   }
