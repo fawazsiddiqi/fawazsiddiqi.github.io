@@ -2,7 +2,7 @@
 title: "Java 8 Isn't Going Away Tomorrow, but Your Excuses Are"
 description: "A Sustain, Modernize, Innovate playbook for enterprise Java"
 tags: [Java, Modernization, Architecture, Cloud]
-image: /assets/img/blog/2026-10-13-java-8-sustain-modernize-innovate.jpg
+image: /assets/img/blog/2026-10-13-java-8-sustain-modernize-innovate-share.jpg
 ---
 
 Ask almost any large enterprise what its most important applications run on, and Java will usually be part of the answer. More than 90% of Fortune 500 companies use Java for enterprise software. Java has kept that position because it scales, it has a huge talent pool, and it runs almost anywhere.
