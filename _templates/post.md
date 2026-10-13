@@ -13,10 +13,11 @@ description: "One or two sentences. Shown on the Writing page card and in search
 tags: [Cloud, Architecture]
 
 # Optional: the picture used when the post is shared on LinkedIn, X, etc.
-# Make it 1200 x 630 px and under 300 KB: X drops anything over 4096 px, WhatsApp
-# anything over ~300 KB, so a full-size camera or stock photo shows no preview.
-# Put the file in assets/img/blog/ first. Leave this out to use the site's default card.
-# image: /assets/img/blog/your-image.jpg
+# Any size works: put the photo in assets/img/blog/ and change only the filename at
+# the end. The /cdn-cgi/image/ part has Cloudflare crop it to 1200 x 630 and compress
+# it, because X drops images over 4096 px and WhatsApp over ~300 KB.
+# Leave this out to use the site's default card.
+# image: /cdn-cgi/image/width=1200,height=630,fit=cover,quality=80,format=jpeg/assets/img/blog/your-image.jpg
 ---
 
 Write the post here in Markdown. Everything below is an example; delete it.
