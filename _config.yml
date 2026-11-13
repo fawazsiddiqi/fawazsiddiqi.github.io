@@ -1,9 +1,9 @@
 ### Site ###
 title               : Fawaz Siddiqi
 description         : >-
-                      Platform Architect at IBM. I turn business problems into systems
+                      Solution architect. I turn business problems into systems
                       somebody can actually build, staff, and pay for.
-tagline             : Platform Architect at IBM   # appended to the title tag
+tagline             : Solution Architect   # appended to the title tag; no job title here, so it never goes stale
 url                 : https://fawazsiddiqi.dev   # no trailing slash
 baseurl             : ""                         # "" for a custom domain or <user>.github.io
 lang                : en

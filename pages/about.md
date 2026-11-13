@@ -1,7 +1,7 @@
 ---
 layout: about
 title: About
-description: Solution architect at IBM, working on application modernization, integration and microservices, and on digital transformation with teams and startups.
+description: "Fawaz Siddiqi is a solution architect for application modernization, integration and microservices, and digital transformation with teams and startups."
 permalink: /about/
 nav: about
 seo:

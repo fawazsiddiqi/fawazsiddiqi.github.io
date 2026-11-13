@@ -33,22 +33,31 @@
   </script>
 
   {% seo %}
-  {%- if page.url == "/" %}
-  {%- comment %} Tells search engines who the site belongs to. Built from _data, so it follows the current job and social links. {% endcomment %}
+  {%- comment %} Tells search engines and AI answer engines who the site belongs to, on every page,
+      under one @id so posts are tied to the same person. Built from _data, so it follows the
+      current job, skills, certifications and social links. {% endcomment %}
   {%- assign role = site.data.timeline | first %}
+  {%- assign schools = site.data.education | map: "school" | uniq %}
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
+      "@id": {{ "/#person" | absolute_url | jsonify }},
       "name": {{ site.author.name | jsonify }},
       "url": {{ "/" | absolute_url | jsonify }},
       "image": {{ "/assets/img/portrait.webp" | absolute_url | jsonify }},
+      "description": {{ site.description | strip | jsonify }},
       "jobTitle": {{ role.title | jsonify }},
+      "hasOccupation": { "@type": "Occupation", "name": "Solution Architect" },
       "worksFor": { "@type": "Organization", "name": {{ role.position | jsonify }} },
+      "alumniOf": [{% for s in schools %}{ "@type": "CollegeOrUniversity", "name": {{ s | jsonify }} }{% unless forloop.last %}, {% endunless %}{% endfor %}],
+      "knowsAbout": [{% for g in site.data.skills %}{% for k in g.skills %}{{ k | jsonify }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+      "award": [{% for h in site.data.about-highlights %}{{ h.title | append: " (" | append: h.detail | append: ")" | jsonify }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+      "hasCredential": [{% for c in site.data.certifications %}{ "@type": "EducationalOccupationalCredential", "name": {{ c.name | jsonify }}, "credentialCategory": "certification", "recognizedBy": { "@type": "Organization", "name": {{ c.issuer | jsonify }} } }{% unless forloop.last %}, {% endunless %}{% endfor %}],
       "sameAs": {{ site.data.social | map: "url" | jsonify }}
     }
   </script>
-  {%- endif %}
+  <link rel="alternate" type="text/plain" title="Site summary for AI assistants" href="{{ '/llms.txt' | relative_url }}">
 
   <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/geist-normal-300-700.woff2' | relative_url }}">
   <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/instrument-serif-italic-400.woff2' | relative_url }}">

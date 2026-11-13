@@ -1,0 +1,53 @@
+---
+layout: null
+permalink: /llms.txt
+sitemap: false
+---
+{%- comment %} llms.txt (llmstxt.org): a plain summary of the site for AI assistants and
+    answer engines. Built from _data and the posts, so it follows the site. {% endcomment -%}
+{%- assign role = site.data.timeline | first -%}
+{%- assign role_short = role.title | split: " - " | first -%}
+{%- assign pages = "/about/,/career/,/skills/,/work/,/writing/" | split: "," -%}
+# {{ site.author.name }}
+
+> {{ site.author.name }}: {{ site.description | strip }}
+
+{{ site.author.name }} is a solution architect working as a {{ role_short }} at {{ role.position }}. He works on application modernization, integration and microservices, and on digital transformation and IT strategy with teams and startups. Site: {{ "/" | absolute_url }}
+
+## Pages
+{% for u in pages %}{% assign pg = site.pages | where: "url", u | first %}
+- [{{ pg.title }}]({{ pg.url | absolute_url }}): {{ pg.description }}
+{%- endfor %}
+
+## Writing
+{% for post in site.posts %}
+- [{{ post.title }}]({% if post.redirect_to %}{{ post.redirect_to }}{% else %}{{ post.url | absolute_url }}{% endif %}){% if post.description %}: {{ post.description }}{% endif %} ({{ post.date | date: "%Y-%m-%d" }})
+{%- endfor %}
+
+## Career
+{% for job in site.data.timeline %}
+- {{ job.title }}, {{ job.position }} ({{ job.from }} to {{ job.to }})
+{%- endfor %}
+{% for e in site.data.education %}
+- {{ e.title }}, {{ e.school }} ({{ e.from }} to {{ e.to }})
+{%- endfor %}
+
+## Recognition
+{% for h in site.data.about-highlights %}
+- {{ h.title }}: {{ h.detail }}
+{%- endfor %}
+
+## Skills
+{% for g in site.data.skills %}
+- {{ g.group }}: {{ g.skills | join: ", " }}
+{%- endfor %}
+
+## Certifications
+{% for c in site.data.certifications %}
+- {{ c.name }} ({{ c.issuer }}{% if c.year %}, {{ c.year }}{% endif %})
+{%- endfor %}
+
+## Profiles
+{% for s in site.data.social %}
+- [{{ s.name }}]({{ s.url }})
+{%- endfor %}
